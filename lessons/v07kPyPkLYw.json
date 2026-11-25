@@ -1,0 +1,55 @@
+{
+  "videoId": "v07kPyPkLYw",
+  "title": "30 Minutes of Real English Conversation You'll Actually Use (A2-B2)",
+  "level": "B1–B2",  "article": "In this relaxed conversation, two friends, Alice and David, talk about everyday life in simple, natural English. Alice admits that her mornings are slow. Her alarm rings at seven, but she stays in her warm bed and checks her phone, so she eventually gets up much later. David, on the other hand, loves the early morning. He drinks water, makes coffee and goes for a short walk, even in cold weather.\n\nThey also share their habits. Alice makes her bed every day because her mother taught her to, and she reads before sleeping. Her bad habit is looking at her phone too much. Both hosts agree that real change happens slowly but surely, which means little by little, step by step.\n\nNext, they discuss work, travel, food and feelings. David is a writer, and he finds writing both satisfying and frustrating when he cannot find the right words. Alice describes how amazed she felt the first time she saw the ocean. They also teach useful words for moods, such as cheerful, gloomy and stressed, and remind listeners not to be hard on themselves.\n\nThe second half focuses on learning English. Mistakes are guaranteed, but they are how we learn. Alice tells an embarrassing story about using the wrong word in a shop. The hosts then give three practical tips: listen every day, speak out loud, and guess the meaning of new words from context instead of translating every word. They also practise everyday phrases like \"Never mind\", \"I figured it out\" and \"Sorry, I didn't catch that.\"\n\nFinally, Alice reveals her dream of writing a novel, but she has a fear of failure. David's advice is simple: \"The fear does not go away by waiting. It goes away by doing.\"",
+  "summary_zh": [
+    "Alice 和 David 用簡單自然的英文聊早晨、生活習慣、工作、旅行、食物與情緒。",
+    "「slowly but surely」是整集主軸：每天練一點點，英文就會穩定進步。",
+    "犯錯是學習的一部分；聽不懂時要勇敢說 \"Could you say that again, please?\"。",
+    "三個學習技巧：每天聽、開口說出來、從上下文猜意思而不是逐字翻譯。",
+    "害怕失敗很正常，恐懼不會因等待而消失，只會在行動中消失。"
+  ],
+  "vocab": [
+    {"word": "slowly but surely", "pos": "phr.", "kk": "[ˋslolɪ bʌt ˋʃʊrlɪ]", "zh": "穩紮穩打地；慢慢但確實地", "quote": "Little by little, you improve, slowly but surely.", "time": 317, "example": "My English is getting better, slowly but surely."},
+    {"word": "eventually", "pos": "adv.", "kk": "[ɪˋvɛntʃʊəlɪ]", "zh": "最後；終於", "quote": "Yes, eventually. I got up, I went to the kitchen, I made coffee.", "time": 92, "example": "The traffic was terrible, but we eventually arrived."},
+    {"word": "patience", "pos": "n.", "kk": "[ˋpeʃəns]", "zh": "耐心", "quote": "It is difficult. It takes time. It takes patience.", "time": 421, "example": "Learning to cook takes a lot of patience."},
+    {"word": "frustrating", "pos": "adj.", "kk": "[ˋfrʌs͵tretɪŋ]", "zh": "令人沮喪的；令人洩氣的", "quote": "It is, very satisfying, but also very frustrating sometimes.", "time": 460, "example": "It's frustrating when the bus is late every day."},
+    {"word": "amazed", "pos": "adj.", "kk": "[əˋmezd]", "zh": "感到驚嘆的", "quote": "You look up and you feel amazed.", "time": 635, "example": "I was amazed by how fast she learned Japanese."},
+    {"word": "cheerful", "pos": "adj.", "kk": "[ˋtʃɪrfəl]", "zh": "開朗愉快的；充滿活力的", "quote": "Oh, I feel happy. I feel cheerful.", "time": 872, "example": "She is always cheerful in the morning."},
+    {"word": "gloomy", "pos": "adj.", "kk": "[ˋglumɪ]", "zh": "陰沉的；有點憂鬱的", "quote": "Sometimes I feel a little gloomy.", "time": 888, "example": "Rainy Mondays always make me feel gloomy."},
+    {"word": "be hard on yourself", "pos": "phr.", "kk": "[bi hɑrd ɑn jʊrˋsɛlf]", "zh": "對自己太苛刻、太嚴格", "quote": "Yes, don't be hard on yourself.", "time": 981, "example": "You did your best, so don't be hard on yourself."},
+    {"word": "embarrassment", "pos": "n.", "kk": "[ɪmˋbærəsmənt]", "zh": "尷尬；難為情", "quote": "The red face, the embarrassment.", "time": 1092, "example": "He laughed to hide his embarrassment."},
+    {"word": "context", "pos": "n.", "kk": "[ˋkɑntɛkst]", "zh": "上下文；語境", "quote": "Try to guess the meaning from the context.", "time": 1183, "example": "You can often understand a new word from its context."},
+    {"word": "figure out", "pos": "phr. v.", "kk": "[ˋfɪgjɚ aʊt]", "zh": "弄懂；想出（解決辦法）", "quote": "Oh, wait, never mind. I figured it out.", "time": 1280, "example": "I can't figure out how to use this app."},
+    {"word": "catch", "pos": "v.", "kk": "[kætʃ]", "zh": "聽清楚；聽懂（口語）", "quote": "Or sorry, I didn't catch that.", "time": 1321, "example": "Sorry, I didn't catch your name."},
+    {"word": "fear of failure", "pos": "n. phr.", "kk": "[fɪr əv ˋfeljɚ]", "zh": "害怕失敗", "quote": "That is called fear of failure.", "time": 1397, "example": "Fear of failure stopped him from starting his own business."},
+    {"word": "dedication", "pos": "n.", "kk": "[͵dɛdəˋkeʃən]", "zh": "投入；堅持不懈", "quote": "Listening until the end, that takes dedication.", "time": 1673, "example": "Her dedication to her work is impressive."},
+    {"word": "time flies", "pos": "idiom", "kk": "[taɪm flaɪz]", "zh": "時光飛逝", "quote": "Time flies when you are having fun.", "time": 1654, "example": "Time flies! It's already December."}
+  ],
+  "shadowing": [
+    {"text": "Little by little, you improve, slowly but surely.", "start": 317, "end": 320},
+    {"text": "Don't be hard on yourself. This means don't blame yourself.", "start": 987, "end": 992.5},
+    {"text": "For example, can you help me? Oh, wait, never mind. I figured it out.", "start": 1280, "end": 1284.5},
+    {"text": "Or sorry, I didn't catch that.", "start": 1321, "end": 1323.5},
+    {"text": "The fear does not go away by waiting. It goes away by doing.", "start": 1552, "end": 1557}
+  ],
+  "mcq": [
+    {"word": "gloomy", "q": "Sometimes I feel a little gloomy. 句中的 gloomy 最接近哪個意思？", "options": ["開朗的", "有點憂鬱、陰沉的", "很生氣的", "很興奮的"], "answer": 1, "explain": "影片 [14:51] 解釋 gloomy = a little sad, a little dark, low energy。「開朗的」是 cheerful，兩者常一起出現，容易混淆。"},
+    {"word": "catch", "q": "Sorry, I didn't catch that. 這句話是什麼意思？", "options": ["我沒接到球", "我沒趕上車", "我沒看到那個", "我沒聽清楚你說的"], "answer": 3, "explain": "catch 在對話裡常指「聽清楚、聽懂」。影片 [22:03]：I didn't understand. I missed it. 「趕上車」是 catch the bus，要看後面接什麼。"},
+    {"word": "figure out", "q": "Never mind. I figured it out. 中的 figure out 是什麼意思？", "options": ["弄懂、想出解決辦法", "計算數字", "畫出圖形", "放棄"], "answer": 0, "explain": "影片 [21:24]：I found the answer. I solved the problem. figure 單獨有「數字」的意思，但 figure out 是片語動詞，意思不同。"},
+    {"word": "dedication", "q": "Listening until the end, that takes dedication. 中的 dedication 指的是？", "options": ["獻花", "分配", "投入、堅持不懈", "猶豫"], "answer": 2, "explain": "影片 [27:57]：Dedication means you are committed. You don't give up. You keep going."},
+    {"word": "be hard on yourself", "q": "Don't be hard on yourself. 最自然的中文是？", "options": ["別對自己太嚴格", "別讓自己太累", "別太固執", "別太努力"], "answer": 0, "explain": "be hard on someone = 對某人很嚴厲、苛刻，不是「辛苦」。影片 [16:27]：don't blame yourself, don't criticize yourself too much。"}
+  ],
+  "cloze": [
+    {"sentence": "It is difficult. It takes time. It takes ______.", "answer": "patience", "hint": "p…（耐心）", "explain": "takes patience = 需要耐心。影片 [7:01]。"},
+    {"sentence": "I was confused, but now I ______ it out.", "answer": "figured", "hint": "f…（弄懂，過去式）", "explain": "figure it out 的過去式 figured it out。影片 [25:45]。"},
+    {"sentence": "I didn't want to leave my warm bed, but ______ I got up and made coffee.", "answer": "eventually", "hint": "e…（最後、終於）", "explain": "eventually 表示經過一段時間後終於發生。影片 [1:32]。"},
+    {"sentence": "Try to guess the meaning of a new word from the ______.", "answer": "context", "hint": "c…（上下文）", "explain": "guess the meaning from the context = 從上下文猜意思。影片 [19:43]。"},
+    {"sentence": "______ flies when you are having fun.", "answer": "Time", "hint": "T…（時光飛逝）", "explain": "Time flies when you're having fun. 是固定說法，表示開心時時間過得特別快。影片 [27:34]。"}
+  ],
+  "translate": [
+    {"zh": "我每天練習一點點，我的英文正穩紮穩打地進步。", "reference": "I practice a little every day, and my English is improving slowly but surely.", "keywords": ["slowly but surely"]},
+    {"zh": "抱歉，我沒聽清楚。你可以再說一次嗎？", "reference": "Sorry, I didn't catch that. Could you say that again, please?", "keywords": ["catch", "say that again"]},
+    {"zh": "別對自己太嚴格，每個人都會害怕失敗。", "reference": "Don't be hard on yourself. Everyone has a fear of failure.", "keywords": ["hard on yourself", "fear of failure"]}
+  ]
+}

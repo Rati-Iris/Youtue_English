@@ -1,0 +1,9 @@
+api_key.txt
+**/api_key.txt
+transcripts/
+**/transcripts/
+__pycache__/
+*.pyc
+build/
+dist/
+*.spec

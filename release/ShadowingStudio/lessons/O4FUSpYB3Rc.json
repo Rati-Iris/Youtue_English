@@ -1,0 +1,56 @@
+{
+  "videoId": "O4FUSpYB3Rc",
+  "title": "All the Psychology Vocabulary You Need in One Video | Real-Life Examples",
+  "level": "B1–B2",
+  "article": "Why do people do the things they do? In this episode, Alice and David introduce the basic vocabulary of psychology, the study of the mind and behavior, using simple examples from daily life.\n\nThey begin with the difference between the conscious mind, which holds what we are aware of, and the unconscious mind, which hides feelings and memories that still affect us. They then explain the ego, our sense of who we are, and self-esteem, how much we value ourselves. Self-esteem is closely connected to confidence, and it can be improved with practice.\n\nNext come words for difficult feelings. A little stress can help us focus, but anxiety is worry that stays even when there is no clear reason. Burnout happens when we work too hard for too long and feel completely empty, which is why self-care matters. The hosts also describe personality: introverts recharge by being alone, extroverts get energy from other people, and ambiverts are a mix of both. Personality traits include openness and conscientiousness.\n\nEmotional intelligence means understanding and managing our own emotions and those of others. A key part of it is empathy, feeling with someone, which is different from sympathy, feeling sorry for them. The episode then explores defense mechanisms, the ways the mind protects us from pain, such as rationalization, denial, projection and repression.\n\nOn motivation, the hosts compare intrinsic motivation, doing something because you love it, with extrinsic motivation, doing it for an outside reward. Every habit has a cue, a routine and a reward. They also warn about cognitive biases such as confirmation bias, the halo effect and negativity bias.\n\nFinally, they discuss therapy, healing, personal growth and resilience, the ability to bounce back after hard times.",
+  "summary_zh": [
+    "心理學是研究「心智與行為」的學問，影片用日常例子介紹最常用的心理學單字。",
+    "意識是你知道的部分，潛意識藏著你不知道、卻仍影響你的感受；自尊心是你多重視自己，可以透過練習提升。",
+    "壓力通常有明確原因，焦慮則是沒有明確原因也揮之不去的擔心；長期過度工作會導致身心俱疲（burnout）。",
+    "情緒智商包含同理心：同理是「和對方一起感受」，同情只是「替對方難過」；大腦也會用合理化、否認、投射、壓抑來保護自己。",
+    "內在動機比外在獎勵更持久；習慣由提示、行為、獎勵組成；每個人都有認知偏誤；而韌性讓人在困難後重新站起來。"
+  ],
+  "vocab": [
+    {"word": "unconscious", "pos": "adj.", "kk": "[ʌnˋkɑnʃəs]", "zh": "潛意識的；不自覺的", "quote": "Now, the unconscious mind.", "time": 187.97, "example": "Many of our habits are driven by unconscious thoughts."},
+    {"word": "self-esteem", "pos": "n.", "kk": "[͵sɛlfəsˋtim]", "zh": "自尊心；自我價值感", "quote": "Self-esteem means how much you value yourself.", "time": 286.53, "example": "Doing well at work really boosted her self-esteem."},
+    {"word": "anxiety", "pos": "n.", "kk": "[æŋˋzaɪətɪ]", "zh": "焦慮（不易消失的擔心與恐懼）", "quote": "Anxiety is a feeling of worry and fear that doesn't go away easily.", "time": 386.69, "example": "He felt a lot of anxiety before moving to a new city."},
+    {"word": "burnout", "pos": "n.", "kk": "[ˋbɝn͵aʊt]", "zh": "過勞；身心俱疲", "quote": "Burnout is when you work so hard for so long that you feel completely empty.", "time": 426.57, "example": "Taking regular breaks can help prevent burnout."},
+    {"word": "recharge", "pos": "v.", "kk": "[riˋtʃɑrdʒ]", "zh": "（休息）恢復精力、充電", "quote": "I know, but after this, I need to go home and be quiet for a while to recharge.", "time": 492.06, "example": "I spend Sunday at home to recharge before the new week."},
+    {"word": "trait", "pos": "n.", "kk": "[tret]", "zh": "（性格上的）特質", "quote": "Traits means characteristics, features of your personality.", "time": 559.86, "example": "Patience is one of her best personality traits."},
+    {"word": "empathy", "pos": "n.", "kk": "[ˋɛmpəθɪ]", "zh": "同理心（能感受他人的感受）", "quote": "Empathy is the ability to feel and understand what another person is feeling.", "time": 709.98, "example": "Good nurses show a lot of empathy for their patients."},
+    {"word": "rationalization", "pos": "n.", "kk": "[͵ræʃənḷəˋzeʃən]", "zh": "合理化（替自己的行為找藉口）", "quote": "Rationalization means making up logical-sounding reasons for your behavior.", "time": 776.22, "example": "Saying \"everyone does it\" is a common rationalization."},
+    {"word": "denial", "pos": "n.", "kk": "[dɪˋnaɪəl]", "zh": "否認；拒絕接受事實", "quote": "Denial means refusing to accept that something is true.", "time": 794.22, "example": "He was in denial about how much money he was spending."},
+    {"word": "projection", "pos": "n.", "kk": "[prəˋdʒɛkʃən]", "zh": "（心理）投射：把自己的感受加到別人身上", "quote": "Projection is when you take a feeling you have and you put it onto someone else.", "time": 807.98, "example": "Accusing others of being jealous can be a kind of projection."},
+    {"word": "intrinsic", "pos": "adj.", "kk": "[ɪnˋtrɪnsɪk]", "zh": "內在的；發自內心的", "quote": "Intrinsic motivation is when you do something because you love it", "time": 901.26, "example": "Her intrinsic love of music keeps her practicing every day."},
+    {"word": "cue", "pos": "n.", "kk": "[kju]", "zh": "提示；觸發（習慣的）信號", "quote": "Let me explain. The cue is the trigger, something that starts the habit.", "time": 958.42, "example": "For me, the smell of coffee is a cue to start working."},
+    {"word": "confirmation bias", "pos": "n. phr.", "kk": "[͵kɑnfɚˋmeʃən ˋbaɪəs]", "zh": "確認偏誤（只找支持自己想法的資訊）", "quote": "Confirmation bias is when you only look for information that confirms what you already believe.", "time": 1031.26, "example": "Reading only news that agrees with you is a sign of confirmation bias."},
+    {"word": "halo effect", "pos": "n. phr.", "kk": "[ˋhelo ɪ͵fɛkt]", "zh": "月暈效應（因一項優點而高估整個人）", "quote": "Yes, like an angel halo. The halo effect is when you think someone is good in many ways just because they are good in one way.", "time": 1065.74, "example": "Because of the halo effect, people often trust good-looking speakers more."},
+    {"word": "resilience", "pos": "n.", "kk": "[rɪˋzɪlɪəns]", "zh": "韌性；復原力（能在困難後振作）", "quote": "Resilience means the ability to recover from difficult situations, to bounce back after hard times.", "time": 1288.14, "example": "Her resilience helped her bounce back after losing her job."}
+  ],
+  "shadowing": [
+    {"text": "Good question. Psychology is the study of the mind and behavior.", "start": 61.32, "end": 66.0},
+    {"text": "I know, but after this, I need to go home and be quiet for a while to recharge.", "start": 492.06, "end": 496.46},
+    {"text": "Sympathy is feeling sorry for someone. Empathy is feeling with them.", "start": 725.46, "end": 729.22},
+    {"text": "That is why one bad comment feels worse than 10 good comments.", "start": 1120.02, "end": 1123.94},
+    {"text": "A resilient person falls down and gets back up. Falls down, gets back up.", "start": 1293.98, "end": 1298.59}
+  ],
+  "mcq": [
+    {"word": "anxiety", "q": "根據影片，anxiety（焦慮）和 stress（壓力）最大的不同是什麼？", "options": ["anxiety 比 stress 輕微", "anxiety 只會在考試前出現", "anxiety 的擔心常常沒有明確原因，也不容易消失", "anxiety 是一種對身體有益的壓力"], "answer": 2, "explain": "影片 [6:30]：With stress, usually there is a clear reason... But with anxiety, the worried feeling stays, even when there is no clear reason。「一點壓力能幫助專注」說的是 stress，不是 anxiety。"},
+    {"word": "empathy", "q": "朋友很難過，你說：\"I can really feel how hard that must be for you.\" 這表現的是？", "options": ["empathy（同理心）", "sympathy（同情）", "denial（否認）", "projection（投射）"], "answer": 0, "explain": "影片 [12:09]：Sympathy is feeling sorry for someone. Empathy is feeling with them。「我能感受到你有多難受」是和對方一起感受，所以是 empathy；I'm sorry that happened to you 才是 sympathy。"},
+    {"word": "rationalization", "q": "\"I ate the whole cake because I needed energy.\" 這是哪一種防衛機制？", "options": ["denial（否認）", "projection（投射）", "repression（壓抑）", "rationalization（合理化）"], "answer": 3, "explain": "影片 [13:00]：rationalization 是替自己的行為編出聽起來合理的理由，吃掉整個蛋糕卻說「因為需要能量」正是如此。denial 是不承認事實，projection 是把自己的感受推給別人。"},
+    {"word": "intrinsic", "q": "有人畫畫不是為了賣錢，只是因為喜歡畫畫。這是哪一種動機？", "options": ["extrinsic motivation（外在動機）", "intrinsic motivation（內在動機）", "confirmation bias（確認偏誤）", "burnout（過勞）"], "answer": 1, "explain": "影片 [15:08]：intrinsic motivation 的獎勵來自內心（The reward comes from inside）。為了獎金努力工作才是 extrinsic motivation。"},
+    {"word": "halo effect", "q": "因為某位講者長得好看，你就自動覺得他也聰明、善良、成功。這是哪一種認知偏誤？", "options": ["confirmation bias（確認偏誤）", "negativity bias（負面偏誤）", "halo effect（月暈效應）", "projection（投射）"], "answer": 2, "explain": "影片 [17:54]：halo effect 是因為某人在一方面好，就認為他各方面都好。confirmation bias 是只找支持自己想法的資訊，negativity bias 是較注意壞事。"}
+  ],
+  "cloze": [
+    {"sentence": "If you have high ______, you feel good about yourself and believe in yourself.", "answer": "self-esteem", "hint": "s…（自尊心，有連字號）", "explain": "high self-esteem = 自我評價高、相信自己；low self-esteem 則相反。影片 [4:56]。"},
+    {"sentence": "______ is when you work so hard for so long that you feel completely empty.", "answer": "Burnout", "hint": "B…（身心俱疲）", "explain": "burnout = 長期過度工作導致的倦怠，影片形容像 a phone with zero battery。影片 [7:06]。"},
+    {"sentence": "After this, I need to go home and be quiet for a while to ______.", "answer": "recharge", "hint": "r…（恢復精力、充電）", "explain": "recharge 原本是替電池充電，比喻休息後恢復精力；影片用來形容內向者獨處後恢復能量。影片 [8:12]。"},
+    {"sentence": "______ is the ability to feel and understand what another person is feeling.", "answer": "Empathy", "hint": "E…（同理心）", "explain": "empathy = 同理心；注意和 sympathy（同情）不同。影片 [11:49]。"},
+    {"sentence": "The ______ is the trigger, something that starts the habit.", "answer": "cue", "hint": "c…（提示、觸發信號）", "explain": "習慣三要素：cue（提示）、routine（行為）、reward（獎勵）。影片 [15:58]。"}
+  ],
+  "translate": [
+    {"zh": "工作太多讓我身心俱疲，這個週末我需要好好休息充電。", "reference": "Too much work has led to burnout, so I need to rest and recharge this weekend.", "keywords": ["burnout", "recharge"]},
+    {"zh": "她很有韌性，每次失敗之後都能重新振作。", "reference": "She is very resilient; she bounces back after every failure.", "keywords": ["resilient"]},
+    {"zh": "我們常常只找支持自己想法的資訊，這就是確認偏誤。", "reference": "We often only look for information that supports what we already believe. That's confirmation bias.", "keywords": ["confirmation bias"]}
+  ]
+}

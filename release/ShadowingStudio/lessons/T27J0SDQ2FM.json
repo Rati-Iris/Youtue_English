@@ -1,0 +1,56 @@
+{
+  "videoId": "T27J0SDQ2FM",
+  "title": "Day 1-10: Speak English in 30 Days! 99 Sentences Shadowing Practice | English Podcast",
+  "level": "B1–B2",
+  "article": "This long episode is the first part of a 30-day speaking challenge from the Speak Up Sessions English podcast. In each of the ten lessons, the teacher, Masu, practises 99 everyday sentences with Fizu, a learner who feels nervous, often freezes, and translates everything in his head before he speaks.\n\nEvery day follows a similar pattern. First, Masu asks simple questions, such as \"How are you today?\" or \"What did you do this morning?\", and gently corrects Fizu's mistakes. A common one is the past tense: Fizu says \"I wake up at 7:00\" about this morning, and Masu reminds him to say \"I woke up.\" Next, they act out real-life situations: ordering at a restaurant, meeting an old friend (\"Long time no see! What have you been up to?\"), asking for directions, making a reservation and apologising for running late.\n\nAfter that comes a listen-and-repeat section, where learners shadow short sentences like \"I'm not afraid of making mistakes\" and \"I'm proud of my progress.\" Each lesson also teaches useful words and phrases with examples, for instance appreciate, frustrated, manage, rewarding, clear my mind and \"I'm looking forward to it\", and ends with a short quiz.\n\nMasu's advice is the same every day. Speak English every day, even for five minutes, and talk to yourself if you have nobody to practise with. Try to think in English instead of translating. Treat mistakes as teachers, listen actively, and be patient, because fluency means speaking comfortably, not perfectly. As he puts it, consistency is the key. Day by day, Fizu becomes more confident, which shows that small daily practice really works.",
+  "summary_zh": [
+    "這是 30 天口說挑戰的第 1–10 天，老師 Masu 每天和學習者 Fizu 一起練習 99 個日常句子。",
+    "每天先用簡單問答暖身並糾正錯誤，最常見的是時態，例如談今天早上要說 I woke up，不是 I wake up。",
+    "接著演練生活情境：餐廳點餐、和老朋友敘舊、問路、訂位、因為遲到道歉等。",
+    "再來是跟讀句子和單字教學（appreciate、frustrated、rewarding、clear my mind 等），最後用小測驗複習。",
+    "Masu 的建議：每天開口、用英文思考、不怕犯錯、主動聽、要有耐心，持續（consistency）才是關鍵。"
+  ],
+  "vocab": [
+    {"word": "long time no see", "pos": "idiom", "kk": "[lɔŋ taɪm no si]", "zh": "好久不見（口語、親切）", "quote": "Hey, Fizo. Long time no see. How have you been?", "time": 546.12, "example": "Long time no see! You look great."},
+    {"word": "what have you been up to", "pos": "phr.", "kk": "[hwɑt hæv ju bɪn ʌp tu]", "zh": "你最近在忙什麼？", "quote": "So, what have you been up to lately?", "time": 554.16, "example": "Hi Tom! What have you been up to since graduation?"},
+    {"word": "keep it up", "pos": "phr.", "kk": "[kip ɪt ʌp]", "zh": "繼續保持、加油", "quote": "That's great to hear. Keep it up.", "time": 569.88, "example": "Your English is getting better. Keep it up!"},
+    {"word": "you can't miss it", "pos": "phr.", "kk": "[ju kænt mɪs ɪt]", "zh": "很好找、一定看得到（指路時用）", "quote": "Exactly. You can't miss it.", "time": 611.48, "example": "The museum is the big white building on the corner. You can't miss it."},
+    {"word": "consistency", "pos": "n.", "kk": "[kənˋsɪstənsɪ]", "zh": "持續性；持之以恆", "quote": "Consistency is the key. Trust the process.", "time": 1080.48, "example": "Consistency matters more than studying for hours once a week."},
+    {"word": "appreciate", "pos": "v.", "kk": "[əˋpriʃɪ͵et]", "zh": "感謝；感激", "quote": "For example, I really appreciate your help.", "time": 2084.16, "example": "I appreciate you taking the time to explain it."},
+    {"word": "make progress", "pos": "phr.", "kk": "[mek ˋprɑgrɛs]", "zh": "進步；有進展", "quote": "When you make progress, you get better.", "time": 2163.6, "example": "She's making good progress with her piano lessons."},
+    {"word": "reservation", "pos": "n.", "kk": "[͵rɛzɚˋveʃən]", "zh": "預訂（餐廳、飯店、座位）", "quote": "example, I have a reservation at the restaurant.", "time": 3478.04, "example": "I'd like to make a reservation for two at seven o'clock."},
+    {"word": "running late", "pos": "phr.", "kk": "[ˋrʌnɪŋ let]", "zh": "（快要）遲到了", "quote": "Good try, but we usually say, \"Sorry, I'm running late.\"", "time": 3590.64, "example": "I'm running late. I'll be there in ten minutes."},
+    {"word": "freeze", "pos": "v.", "kk": "[friz]", "zh": "（因緊張）僵住、說不出話（過去式 froze）", "quote": "example, when the teacher asked me a question, I froze.", "time": 10378.48, "example": "I always freeze when I have to speak in front of people."},
+    {"word": "manage", "pos": "v.", "kk": "[ˋmænɪdʒ]", "zh": "應付、處理（困難的事）；還過得去", "quote": "example, I have a lot of work, but I'm managing.", "time": 10405.92, "example": "It's a busy week, but I'm managing."},
+    {"word": "frustrated", "pos": "adj.", "kk": "[ˋfrʌs͵tretɪd]", "zh": "（因事情不順而）沮喪、煩躁的", "quote": "example, I feel frustrated when I can't remember English words.", "time": 10426.76, "example": "He got frustrated when the computer kept crashing."},
+    {"word": "rewarding", "pos": "adj.", "kk": "[rɪˋwɔrdɪŋ]", "zh": "（雖辛苦但）有成就感、值得的", "quote": "teaching is hard work, but it's very rewarding", "time": 10498.44, "example": "Volunteering is tiring but very rewarding."},
+    {"word": "clear my mind", "pos": "phr.", "kk": "[klɪr maɪ maɪnd]", "zh": "放空、讓腦袋清靜一下", "quote": "For example, I went for a walk to clear my mind.", "time": 10520.88, "example": "I listen to music to clear my mind after work."},
+    {"word": "look forward to", "pos": "phr.", "kk": "[lʊk ˋfɔrwɚd tu]", "zh": "期待（I'm looking forward to it.）", "quote": "See you then. I'm looking forward to it.", "time": 13007.04, "example": "I'm looking forward to the weekend."}
+  ],
+  "shadowing": [
+    {"text": "I'm not afraid of making mistakes.", "start": 293.8, "end": 296.4},
+    {"text": "I've been busy with work, but I'm doing well. So, what have you been up to lately?", "start": 552.4, "end": 556.84},
+    {"text": "Of course. The train station is very close. Go straight for two blocks, then turn left. You'll see it on your right.", "start": 600.68, "end": 608.48},
+    {"text": "For example, I went for a walk to clear my mind.", "start": 10520.88, "end": 10525.56},
+    {"text": "See you then. I'm looking forward to it.", "start": 13007.04, "end": 13009.44}
+  ],
+  "mcq": [
+    {"word": "you can't miss it", "q": "指路時對方最後說：\"Exactly. You can't miss it.\" 這是什麼意思？", "options": ["你不能錯過這個機會", "你一定會想念它", "你不准離開", "很好找，你一定看得到"], "answer": 3, "explain": "影片 [10:11]：指路時說 You can't miss it，表示地點很明顯、不會找不到。miss 在這裡是「錯過、沒看到」，不是「想念」。"},
+    {"word": "keep it up", "q": "朋友說他每天練英文、越來越有自信。你回：\"That's great to hear. Keep it up.\" 意思是？", "options": ["把它舉高", "繼續保持下去", "把東西收起來", "快點起床"], "answer": 1, "explain": "影片 [9:29]：Keep it up = 繼續保持、加油，用來鼓勵別人。和 pick it up（撿起來）、get up（起床）不同。"},
+    {"word": "running late", "q": "你和朋友約好卻會晚到，最自然的說法是？", "options": ["Sorry, I'm running late.", "Sorry, I am coming late.", "Sorry, I late.", "Sorry, I'm lately."], "answer": 0, "explain": "影片 [59:50]：Fizu 說 Sorry, I am coming late，老師糾正為 Sorry, I'm running late 或 I'm going to be late。lately 是「最近」，不是「晚」。"},
+    {"word": "freeze", "q": "\"When the teacher asked me a question, I froze.\" 這句的意思是？", "options": ["我覺得很冷", "我馬上回答了", "我因為緊張突然僵住，說不出話", "我把問題寫下來"], "answer": 2, "explain": "影片 [2:52:58]：freeze means to suddenly stop moving or stop speaking because you're nervous or scared。不是溫度上的冷。"},
+    {"word": "rewarding", "q": "\"Teaching is hard work, but it's very rewarding.\" 這裡的 rewarding 是什麼意思？", "options": ["很賺錢的", "雖然辛苦，但讓人有成就感、很值得", "很輕鬆的", "會得到獎品的"], "answer": 1, "explain": "影片 [2:54:58]：rewarding means something that makes you feel happy and satisfied, even if it's difficult。重點是心裡的滿足感，不是錢或獎品。"}
+  ],
+  "cloze": [
+    {"sentence": "I've been busy with work, but I'm doing well. So, what have you been ______ to lately?", "answer": "up", "hint": "u…（what have you been ___ to：最近在忙什麼）", "explain": "What have you been up to? = 你最近在忙什麼？朋友久別重逢時很常用。影片 [9:14]。"},
+    {"sentence": "______ is the key. Trust the process.", "answer": "Consistency", "hint": "C…（持之以恆）", "explain": "consistency = 持續、規律地做；老師強調每天練一點比偶爾練很久更重要。影片 [18:00]。"},
+    {"sentence": "For example, I really ______ your help.", "answer": "appreciate", "hint": "a…（感謝）", "explain": "appreciate = 感謝；I really appreciate your help 比 thank you 更正式、真誠。影片 [34:44]。"},
+    {"sentence": "I have a lot of work, but I'm ______.", "answer": "managing", "hint": "m…（應付得來，-ing 形式）", "explain": "I'm managing = 雖然事情多，但還應付得來。前面有 I'm，要用進行式 managing。影片 [2:53:25]。"},
+    {"sentence": "I went for a walk to ______ my mind.", "answer": "clear", "hint": "c…（放空：___ my mind）", "explain": "clear my mind = 讓腦袋清靜、不想煩惱的事。影片 [2:55:20]。"}
+  ],
+  "translate": [
+    {"zh": "好久不見！你最近在忙什麼？", "reference": "Long time no see! What have you been up to lately?", "keywords": ["long time no see", "been up to"]},
+    {"zh": "抱歉，我快遲到了，路上塞車。", "reference": "Sorry, I'm running late. There's a lot of traffic.", "keywords": ["running late"]},
+    {"zh": "學英文很辛苦，但很有成就感，而且我每天都在進步。", "reference": "Learning English is hard, but it's very rewarding, and I'm making progress every day.", "keywords": ["rewarding", "making progress"]}
+  ]
+}

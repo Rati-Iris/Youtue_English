@@ -1,0 +1,1299 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shadowing Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: video + live subtitle log side by side on top, step-by-step practice deck below. */
+:root {
+  --bg: #eef1f5;
+  --surface: #ffffff;
+  --surface-2: #f6f8fb;
+  --ink: #16202d;
+  --muted: #5a6677;
+  --line: #d9e0e8;
+  --accent: #2453c9;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3eaff;
+  --rec: #d1343a;
+  --rec-soft: #fde7e8;
+  --ok: #1d7f48;
+  --ok-soft: #e1f3e8;
+  --bad: #c22d33;
+  --bad-soft: #fbe4e5;
+  --warn: #9a5c00;
+  --warn-soft: #fff0d6;
+  --shadow: 0 1px 2px rgba(22, 32, 45, .06), 0 4px 16px rgba(22, 32, 45, .05);
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Manrope", "Microsoft JhengHei", "PingFang TC", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f141b; --surface: #171e28; --surface-2: #1d2531; --ink: #e6ebf2; --muted: #98a4b5;
+    --line: #2b3544; --accent: #7fa2ff; --accent-ink: #0d1424; --accent-soft: #1f2c4d;
+    --rec: #ff6b70; --rec-soft: #3a1d21; --ok: #5fd08f; --ok-soft: #173326; --bad: #ff7d81;
+    --bad-soft: #3a1c1f; --warn: #f0b35a; --warn-soft: #3a2c14;
+    --shadow: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f141b; --surface: #171e28; --surface-2: #1d2531; --ink: #e6ebf2; --muted: #98a4b5;
+  --line: #2b3544; --accent: #7fa2ff; --accent-ink: #0d1424; --accent-soft: #1f2c4d;
+  --rec: #ff6b70; --rec-soft: #3a1d21; --ok: #5fd08f; --ok-soft: #173326; --bad: #ff7d81;
+  --bad-soft: #3a1c1f; --warn: #f0b35a; --warn-soft: #3a2c14;
+  --shadow: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+/* The hidden attribute must win over component display rules (e.g. .video-msg { display: grid }). */
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font: 15px/1.6 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; text-wrap: balance; margin: 0; }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* ---------- top bar ---------- */
+.topbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px;
+  padding-block: 14px; padding-inline: max(16px, 3vw);
+  background: var(--surface); border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: baseline; gap: 10px; }
+.brand h1 { font-size: 1.25rem; letter-spacing: -.01em; }
+.brand span { color: var(--muted); font-size: .85rem; }
+.load-form { display: flex; gap: 8px; flex: 1 1 420px; min-width: 0; }
+.load-form input {
+  flex: 1; min-width: 0; padding: 9px 12px; border: 1px solid var(--line);
+  border-radius: 8px; background: var(--surface-2);
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--surface); cursor: pointer; font-weight: 600; font-size: .9rem;
+  transition: background .15s, border-color .15s;
+}
+.btn:hover:not(:disabled) { border-color: var(--accent); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover:not(:disabled) { filter: brightness(1.08); }
+.btn.rec { background: var(--rec); color: #fff; border-color: var(--rec); }
+.btn.rec.on { animation: pulse 1.2s infinite; }
+.btn.small { padding: 4px 9px; font-size: .8rem; }
+.btn.ghost { background: transparent; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 6px var(--rec-soft); } }
+@media (prefers-reduced-motion: reduce) { .btn.rec.on { animation: none; } * { scroll-behavior: auto !important; } }
+
+main { padding-block: 20px 48px; padding-inline: max(16px, 3vw); display: grid; gap: 20px; max-width: 1400px; margin: 0 auto; }
+
+/* ---------- stage: video + subtitles ---------- */
+.stage { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.video-col { display: grid; gap: 10px; min-width: 0; }
+.video-wrap {
+  position: relative; aspect-ratio: 16 / 9; max-width: 100%;
+  background: #000; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+}
+.video-wrap iframe, .video-wrap #player { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video-msg {
+  position: absolute; inset: 0; display: grid; place-content: center; gap: 10px;
+  text-align: center; color: #e9eef5; background: #10161f; padding: 24px;
+}
+.video-msg a { color: #9db7ff; }
+.now-caption {
+  min-height: 3.2em; padding: 10px 14px; border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--line);
+  font-size: 1.08rem; font-weight: 600; display: flex; gap: 10px; align-items: center;
+}
+.now-caption .mono { color: var(--muted); font-size: .8rem; font-weight: 400; }
+.video-title { color: var(--muted); font-size: .9rem; }
+
+.subs {
+  display: flex; flex-direction: column; min-width: 0;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); height: clamp(320px, 52vw * .5625 + 4.5em, 640px);
+}
+.subs-head { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.subs-head h2 { font-size: 1rem; margin-right: auto; }
+.subs-head label { font-size: .82rem; color: var(--muted); display: flex; gap: 4px; align-items: center; }
+.subs-head input[type="search"] {
+  flex-basis: 100%; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface-2); min-width: 0;
+}
+.sub-list { list-style: none; margin: 0; padding: 6px; overflow-y: auto; flex: 1; position: relative; }
+.sub-list li {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: start;
+  padding: 6px 8px; border-radius: 6px; cursor: pointer;
+}
+.sub-list li:hover { background: var(--surface-2); }
+.sub-list li.active { background: var(--accent-soft); }
+.sub-list li.active .txt { font-weight: 600; }
+.sub-list .ts { color: var(--accent); font-size: .78rem; padding-top: 3px; background: none; border: 0; cursor: pointer; }
+.sub-list .txt { min-width: 0; }
+.sub-list .mic { opacity: 0; }
+.sub-list li:hover .mic, .sub-list li.active .mic, .sub-list .mic:focus-visible { opacity: 1; }
+.subs-empty { padding: 24px 16px; color: var(--muted); }
+.sub-list .who { display: inline-block; margin-right: 6px; font-size: .72rem; letter-spacing: .03em; color: var(--muted); text-transform: uppercase; }
+/* ---------- practice ---------- */
+.practice { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); min-width: 0; }
+.stepper { display: flex; gap: 4px; padding: 10px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.step-chip {
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
+  padding: 7px 12px; border-radius: 999px; border: 1px solid transparent;
+  background: transparent; cursor: pointer; font-weight: 600; font-size: .88rem; color: var(--muted);
+}
+.step-chip .n { font-family: var(--font-mono); font-size: .75rem; width: 20px; height: 20px; display: grid; place-content: center; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--line); }
+.step-chip.current { color: var(--ink); border-color: var(--accent); background: var(--accent-soft); }
+.step-chip.current .n { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.step-chip.done .n { background: var(--ok-soft); color: var(--ok); border-color: var(--ok); }
+.panel { padding: 22px clamp(16px, 3vw, 32px); min-height: 280px; display: grid; gap: 18px; align-content: start; }
+.panel h2 { font-size: 1.35rem; }
+.panel .lead { color: var(--muted); margin: -10px 0 0; }
+.step-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--line); background: var(--surface-2); border-radius: 0 0 var(--radius) var(--radius); }
+.step-nav .count { color: var(--muted); font-size: .85rem; }
+
+.article { max-width: 68ch; display: grid; gap: 12px; font-size: 1.02rem; }
+.article p { margin: 0; }
+.summary { max-width: 68ch; background: var(--surface-2); border-radius: 8px; padding: 14px 18px 14px 34px; margin: 0; }
+.summary li + li { margin-top: 4px; }
+.label { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; min-width: 820px; font-size: .9rem; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+th { background: var(--surface-2); font-size: .78rem; color: var(--muted); font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+td.word { font-weight: 700; white-space: nowrap; }
+td .quote { font-style: italic; }
+
+/* shadowing */
+.shadow-picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.pick { padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-size: .82rem; display: flex; gap: 6px; align-items: center; }
+.pick.current { border-color: var(--accent); background: var(--accent-soft); font-weight: 700; }
+.pick .sc { font-family: var(--font-mono); font-size: .72rem; padding: 0 5px; border-radius: 4px; }
+.sc.good { background: var(--ok-soft); color: var(--ok); }
+.sc.mid { background: var(--warn-soft); color: var(--warn); }
+.sc.low { background: var(--bad-soft); color: var(--bad); }
+.target { font-size: clamp(1.15rem, 2.2vw, 1.5rem); font-weight: 600; line-height: 1.5; font-family: var(--font-display); }
+.target-meta { color: var(--muted); font-size: .85rem; }
+.ctrl-group { display: grid; gap: 8px; }
+.ctrl-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.rec-status { display: flex; align-items: center; gap: 8px; font-size: .88rem; color: var(--muted); }
+.rec-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--rec); }
+.live { min-height: 1.6em; color: var(--muted); font-style: italic; }
+.result { display: grid; gap: 14px; padding: 16px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--line); }
+.score-line { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.score-num { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.diff { font-size: 1.15rem; line-height: 2.3; }
+.w { display: inline-block; padding: 0 3px; border-radius: 4px; margin-right: 2px; position: relative; }
+.w.ok { color: var(--ok); }
+.w.bad { background: var(--bad-soft); color: var(--bad); font-weight: 700; }
+.w.miss { color: var(--bad); text-decoration: line-through dashed; opacity: .85; }
+.w .heard { position: absolute; left: 0; top: 1.5em; font-size: .68rem; line-height: 1; white-space: nowrap; color: var(--muted); font-weight: 500; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .78rem; color: var(--muted); }
+.issues { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.issues li { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 6px 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; font-size: .9rem; }
+.issues b { min-width: 6em; }
+audio { width: 100%; max-width: 480px; height: 36px; }
+.note { font-size: .8rem; color: var(--muted); }
+details.dict { border-top: 1px dashed var(--line); padding-top: 12px; }
+details.dict summary { cursor: pointer; font-weight: 600; }
+
+/* quiz */
+.q-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.q-text { font-size: 1.1rem; font-weight: 600; max-width: 68ch; }
+.options { display: grid; gap: 8px; max-width: 560px; }
+.opt { text-align: left; padding: 11px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; display: flex; gap: 10px; }
+.opt .k { font-family: var(--font-mono); color: var(--muted); }
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt.right { border-color: var(--ok); background: var(--ok-soft); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt:disabled { cursor: default; }
+.feedback { padding: 12px 14px; border-radius: 8px; max-width: 68ch; }
+.feedback.ok { background: var(--ok-soft); }
+.feedback.bad { background: var(--bad-soft); }
+.feedback.info { background: var(--surface-2); border: 1px solid var(--line); }
+.feedback b { display: block; margin-bottom: 2px; }
+.text-in { width: 100%; max-width: 560px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); }
+textarea.text-in { min-height: 84px; resize: vertical; }
+.cloze-sent { font-size: 1.15rem; font-weight: 600; }
+.cloze-sent .blank { display: inline-block; min-width: 5em; border-bottom: 2px solid var(--accent); text-align: center; color: var(--accent); }
+.kw { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: .8rem; margin: 2px 4px 2px 0; }
+.kw.hit { background: var(--ok-soft); color: var(--ok); }
+.kw.miss { background: var(--bad-soft); color: var(--bad); }
+
+/* results */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); }
+.stat .v { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat .l { font-size: .8rem; color: var(--muted); }
+.review { display: flex; flex-wrap: wrap; gap: 6px; }
+.empty { padding: 18px; border: 1px dashed var(--line); border-radius: 8px; color: var(--muted); display: grid; gap: 10px; max-width: 68ch; }
+.gen-row { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--ink); }
+.spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--accent); animation: spin .8s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 3s; } }
+.empty .text-in { max-width: 420px; }
+.gen-opt { display: grid; gap: 8px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); min-width: 0; }
+.gen-opt > .label { text-transform: none; letter-spacing: normal; font-size: .92rem; color: var(--ink); }
+.empty code { font-family: var(--font-mono); background: var(--surface-2); padding: 6px 10px; border-radius: 6px; color: var(--ink); word-break: break-all; }
+.history { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); min-width: 0; }
+.history-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.history-head h2 { font-size: 1rem; margin-right: auto; }
+.history-list { list-style: none; margin: 0; padding: 6px; max-height: 320px; overflow-y: auto; }
+.history-list li { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 8px 10px; border-radius: 6px; }
+.history-list li:hover { background: var(--surface-2); }
+.history-list li.current { background: var(--accent-soft); }
+.history-item { min-width: 0; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; display: grid; gap: 2px; }
+.history-item .t { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.history-item .u { font-size: .75rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.history-list .when { font-size: .75rem; color: var(--muted); white-space: nowrap; }
+.history-empty { padding: 16px; color: var(--muted); }
+.banner { padding: 10px 14px; border-radius: 8px; background: var(--warn-soft); color: var(--warn); font-size: .9rem; }
+
+@media (max-width: 900px) {
+  .stage { grid-template-columns: minmax(0, 1fr); }
+  .subs { height: 46vh; }
+  .sub-list .mic { opacity: 1; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><h1>Shadowing Studio</h1><span>YouTube 英文跟讀練習</span></div>
+  <form class="load-form" id="loadForm">
+    <input id="urlInput" type="url" placeholder="貼上 YouTube 網址，例如 https://www.youtube.com/watch?v=..." aria-label="YouTube 網址" required>
+    <button class="btn primary" type="submit">載入影片</button>
+    <button class="btn" id="historyBtn" type="button" aria-expanded="false" aria-controls="historyPanel">歷史紀錄</button>
+  </form>
+</header>
+
+<main>
+  <div class="banner" id="banner" hidden></div>
+
+  <section class="history" id="historyPanel" aria-label="歷史紀錄" hidden>
+    <div class="history-head">
+      <h2>看過的影片</h2>
+      <button class="btn small ghost" id="historyClear" type="button">清除全部</button>
+      <button class="btn small" id="historyClose" type="button">關閉</button>
+    </div>
+    <ol class="history-list" id="historyList"></ol>
+  </section>
+
+  <section class="stage">
+    <div class="video-col">
+      <div class="video-wrap"><div id="player"></div><div class="video-msg" id="videoMsg" hidden></div></div>
+      <div class="now-caption" id="nowCaption"><span class="mono">--:--</span><span>按下播放，目前字幕會顯示在這裡</span></div>
+      <div class="video-title" id="videoTitle"></div>
+    </div>
+    <aside class="subs" aria-label="字幕紀錄">
+      <div class="subs-head">
+        <h2>字幕紀錄</h2>
+        <label><input type="checkbox" id="followSubs" checked> 跟隨播放</label>
+        <button class="btn small" id="pdfBtn" type="button">下載字幕 PDF</button>
+        <input type="search" id="subSearch" placeholder="搜尋字幕…" aria-label="搜尋字幕">
+      </div>
+      <ol class="sub-list" id="subList"><li class="subs-empty">載入中…</li></ol>
+    </aside>
+  </section>
+
+  <section class="practice" aria-label="練習">
+    <nav class="stepper" id="stepper"></nav>
+    <div class="panel" id="panel"></div>
+    <div class="step-nav">
+      <button class="btn" id="prevStep" type="button">← 上一步</button>
+      <span class="count mono" id="stepCount"></span>
+      <button class="btn primary" id="nextStep" type="button">下一步 →</button>
+    </div>
+  </section>
+</main>
+
+<script>
+'use strict';
+const DEFAULT_URL = 'https://www.youtube.com/watch?v=v07kPyPkLYw';
+const STEPS = [
+  { key: 'article', label: '文章' },
+  { key: 'vocab', label: '單字' },
+  { key: 'shadow', label: '跟讀' },
+  { key: 'mcq', label: '選擇題' },
+  { key: 'cloze', label: '克漏字' },
+  { key: 'translate', label: '中翻英' },
+  { key: 'result', label: '成績' },
+];
+
+const $ = (s) => document.querySelector(s);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v == null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k === 'text') e.textContent = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat()) {
+    if (k == null || k === false) continue;
+    e.append(k instanceof Node ? k : document.createTextNode(String(k)));
+  }
+  return e;
+}
+function fmt(t) {
+  t = Math.max(0, Math.floor(t || 0));
+  const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60;
+  return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(s).padStart(2, '0');
+}
+function storeGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
+function storeSet(k, v) { try { localStorage.setItem(k, v); } catch { /* ignore */ } }
+
+/* ================= state ================= */
+const S = {};
+function resetState(id) {
+  for (const it of (S.shadow?.items || [])) if (it.rec?.url) URL.revokeObjectURL(it.rec.url);
+  Object.assign(S, {
+    videoId: id, title: '', sentences: [], lesson: null, step: 0, curIdx: -1,
+    mcq: { i: 0, res: [] }, cloze: { i: 0, res: [] }, tr: { i: 0, res: [] },
+    shadow: { i: 0, items: [] },
+    spkMode: 'auto',
+  });
+}
+
+/* ================= YouTube player ================= */
+let player = null, playerReady = false, segTimer = null, segResolve = null;
+window.onYouTubeIframeAPIReady = () => {
+  player = new YT.Player('player', {
+    videoId: S.videoId || '',
+    playerVars: { rel: 0, playsinline: 1, modestbranding: 1, origin: location.origin },
+    events: {
+      onReady: () => { playerReady = true; },
+      onError: (e) => {
+        const msg = $('#videoMsg');
+        const url = 'https://www.youtube.com/watch?v=' + encodeURIComponent(S.videoId || '');
+        msg.replaceChildren(
+          el('div', { text: [101, 150].includes(e.data) ? '這支影片的作者不允許嵌入播放。' : '影片無法播放（錯誤碼 ' + e.data + '）。' }),
+          el('a', { href: url, target: '_blank', rel: 'noopener', text: '到 YouTube 觀看' }),
+          el('div', { class: 'note', text: '字幕紀錄與練習仍可使用。' }));
+        msg.hidden = false;
+      },
+    },
+  });
+};
+function cueVideo(id) {
+  $('#videoMsg').hidden = true;
+  if (playerReady) player.cueVideoById(id);
+}
+function stopSegment() {
+  clearInterval(segTimer); segTimer = null;
+  if (segResolve) { segResolve(); segResolve = null; }
+}
+// Play [start, end] of the video, resolve when it reaches the end.
+function playSegment(start, end, rate = 1) {
+  if (!playerReady) return Promise.resolve();
+  stopSegment();
+  return new Promise((resolve) => {
+    segResolve = resolve;
+    try { player.setPlaybackRate(rate); } catch { /* ignore */ }
+    player.seekTo(Math.max(0, start - 0.15), true);
+    player.playVideo();
+    let started = false;
+    const t0 = Date.now();
+    segTimer = setInterval(() => {
+      const t = player.getCurrentTime();
+      if (!started) { started = t >= start - 0.6 && t < end; if (!started && Date.now() - t0 < 4000) return; }
+      if (t >= end || Date.now() - t0 > ((end - start) / rate) * 1000 + 8000) {
+        player.pauseVideo();
+        try { player.setPlaybackRate(1); } catch { /* ignore */ }
+        stopSegment();
+      }
+    }, 80);
+  });
+}
+function seekPlay(t) { if (!playerReady) return; stopSegment(); player.seekTo(t, true); player.playVideo(); }
+
+/* ================= transcript ================= */
+function buildSentences(lines) {
+  const words = [];
+  lines.forEach((l, i) => {
+    const clean = String(l.text).replace(/\[[^\]]*\]/g, ' ').replace(/\s+/g, ' ');
+    const next = lines[i + 1];
+    const dur = next ? Math.max(0.2, next.start - l.start) : (l.duration || 2);
+    const toks = [];
+    clean.split('>>').forEach((part, pi) => {
+      if (pi > 0) toks.push({ brk: true });
+      part.trim().split(' ').filter(Boolean).forEach((w) => toks.push({ w }));
+    });
+    const wc = toks.filter((x) => x.w).length || 1;
+    let k = 0;
+    for (const x of toks) {
+      if (x.brk) { words.push(x); continue; }
+      words.push({ w: x.w, t: l.start + (dur * k) / wc });
+      k++;
+    }
+  });
+  const out = [];
+  let cur = null;
+  // ">>" marks a speaker change; consecutive markers (e.g. ">> [music]") count once.
+  let group = 0, pending = false;
+  const flush = () => { if (cur && cur.words.length) out.push({ text: cur.words.join(' '), start: cur.start, group: cur.group }); cur = null; };
+  for (const x of words) {
+    if (x.brk) { flush(); if (out.length) pending = true; continue; }
+    if (!cur) {
+      if (pending) { group++; pending = false; }
+      cur = { words: [], start: x.t, group };
+    }
+    cur.words.push(x.w);
+    if (/[.?!]["”']?$/.test(x.w) && !/^(Mr|Mrs|Ms|Dr)\.$/.test(x.w)) flush();
+  }
+  flush();
+  out.forEach((s, i) => { s.end = out[i + 1] ? Math.min(out[i + 1].start + 0.2, s.start + 15) : s.start + 4; });
+  return out;
+}
+function sentenceAt(t) {
+  const a = S.sentences;
+  let lo = 0, hi = a.length - 1, ans = -1;
+  while (lo <= hi) { const mid = (lo + hi) >> 1; if (a[mid].start <= t + 0.15) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
+  return ans;
+}
+function renderSubs() {
+  const list = $('#subList');
+  list.replaceChildren(...S.sentences.map((s, i) => el('li', {
+    'data-i': i,
+    onclick: (e) => { if (!e.target.closest('.mic')) seekPlay(s.start); },
+  },
+    el('button', { class: 'ts mono', type: 'button', text: fmt(s.start), 'aria-label': '跳到 ' + fmt(s.start) }),
+    el('span', { class: 'txt' }, s.speaker ? el('b', { class: 'who', text: s.speaker }) : null, s.text),
+    el('button', { class: 'btn small ghost mic', type: 'button', text: '跟讀', title: '把這句加入跟讀練習', onclick: () => addShadow(s) }),
+  )));
+  if (!S.sentences.length) list.replaceChildren(el('li', { class: 'subs-empty', text: '這支影片沒有可用的英文字幕。' }));
+  S.curIdx = -1;
+}
+$('#subSearch').addEventListener('input', (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll('#subList li[data-i]').forEach((li) => {
+    li.hidden = q && !S.sentences[li.dataset.i].text.toLowerCase().includes(q);
+  });
+});
+setInterval(() => {
+  if (!playerReady || !S.sentences.length || typeof player.getCurrentTime !== 'function') return;
+  const t = player.getCurrentTime();
+  const idx = sentenceAt(t);
+  if (idx === S.curIdx) return;
+  const list = $('#subList');
+  list.querySelector('li.active')?.classList.remove('active');
+  S.curIdx = idx;
+  if (idx < 0) return;
+  const row = list.querySelector(`li[data-i="${idx}"]`);
+  row?.classList.add('active');
+  $('#nowCaption').replaceChildren(el('span', { class: 'mono', text: fmt(S.sentences[idx].start) }), el('span', { text: S.sentences[idx].text }));
+  if (row && $('#followSubs').checked && !$('#subSearch').value) {
+    list.scrollTo({ top: row.offsetTop - list.clientHeight * 0.35, behavior: 'smooth' });
+  }
+}, 250);
+
+/* ================= speakers ================= */
+// Priority: lesson.turns (labelled by Claude) > auto detection (">>" markers, re-synced
+// at places where someone is addressed by name, e.g. "Okay, Alice," => David speaks).
+// Names are detected from the transcript; if none are found, "Speaker A" / "Speaker B".
+const NOT_NAMES = new Set(('Okay Yes Well Oh Ooh Ugh Mhm Hmm Ahh Exactly Perfect Right Good Great Wow Really Thanks Please Sorry Hello ' +
+  'Hey Everyone Listeners Friends Guys Beautiful Sure Now Ready True English Grandma Mom Dad Sir Madam Baby Seriously ' +
+  'Interesting Amazing Correct Absolutely Definitely Maybe Goodbye').split(' '));
+function detectNames(sents) {
+  const lower = new Set(), count = new Map();
+  const voc = /^([A-Z][a-z]{2,}),|,\s+([A-Z][a-z]{2,})(?=\s*[,.?!]|$)/g;
+  for (const s of sents) {
+    for (const w of s.text.split(/\s+/)) {
+      const b = w.replace(/[^A-Za-z']/g, '');
+      if (b && b[0] !== b[0].toUpperCase()) lower.add(b.toLowerCase());
+    }
+    for (const m of s.text.matchAll(voc)) { const n = m[1] || m[2]; count.set(n, (count.get(n) || 0) + 1); }
+  }
+  // A name is used to address someone (", Alice," / "Alice, ...") and never appears in lowercase.
+  const cand = [...count].filter(([n]) => !NOT_NAMES.has(n) && !lower.has(n.toLowerCase())).sort((a, b) => b[1] - a[1]);
+  if (!cand.length) return [];
+  const min = Math.max(3, Math.ceil(cand[0][1] * 0.3));
+  return cand.filter(([, c]) => c >= min).slice(0, 2).map(([n]) => n);
+}
+function computeSpeakers() {
+  const sents = S.sentences, turns = S.lesson?.turns;
+  if (Array.isArray(turns) && turns.length) {
+    S.spkMode = 'claude';
+    const t = [...turns].sort((a, b) => a.start - b.start);
+    let k = 0;
+    for (const s of sents) {
+      while (k + 1 < t.length && t[k + 1].start <= s.start + 0.3) k++;
+      s.speaker = t[k].speaker;
+    }
+    return;
+  }
+  S.spkMode = 'auto';
+  const found = detectNames(sents);
+  const names = [found[0] || 'Speaker A', found[1] || 'Speaker B'];
+  const reEsc = (n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const anchors = [];
+  for (const s of sents) {
+    found.forEach((n, j) => {
+      if (new RegExp('(?:^|,\\s*|\\s)' + reEsc(n) + '(?=\\s*[,.?!]|$)').test(s.text)) anchors.push({ g: s.group, sp: 1 - j });
+    });
+  }
+  const cache = new Map();
+  const predict = (g) => {
+    if (cache.has(g)) return cache.get(g);
+    const v = [0, 0];
+    let best = null;
+    for (const a of anchors) {
+      const d = Math.abs(g - a.g), sp = a.sp ^ ((g - a.g) & 1);
+      if (d <= 15) v[sp] += 1 / (1 + d);
+      if (!best || d < best.d) best = { d, sp };
+    }
+    const r = v[0] !== v[1] ? (v[0] > v[1] ? 0 : 1) : best ? best.sp : (g & 1);
+    cache.set(g, r);
+    return r;
+  };
+  for (const s of sents) s.speaker = names[predict(s.group)];
+}
+
+/* ================= PDF download ================= */
+$('#pdfBtn').addEventListener('click', async () => {
+  const btn = $('#pdfBtn'), label = '下載字幕 PDF';
+  if (!S.sentences.length) { btn.textContent = '沒有字幕可下載'; setTimeout(() => { btn.textContent = label; }, 2000); return; }
+  const now = new Date();
+  const payload = {
+    videoId: S.videoId,
+    title: S.title,
+    url: 'https://www.youtube.com/watch?v=' + S.videoId,
+    autoSpeakers: S.spkMode === 'auto',
+    date: `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}`,
+    rows: S.sentences.map((s) => ({ time: fmt(s.start), speaker: s.speaker || '', text: s.text })),
+  };
+  btn.disabled = true; btn.textContent = '產生中…';
+  try {
+    const r = await fetch('/api/pdf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    if (!r.ok) { const j = await r.json().catch(() => ({})); throw new Error(j.error || 'HTTP ' + r.status); }
+    const blob = await r.blob();
+    const safe = (S.title || S.videoId).replace(/[\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+    const a = el('a', { href: URL.createObjectURL(blob), download: `${safe} - transcript.pdf` });
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+    btn.textContent = label;
+  } catch (err) {
+    btn.textContent = label;
+    showBanner('字幕 PDF 下載失敗：' + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+/* ================= loading ================= */
+function parseVideoId(s) {
+  s = (s || '').trim();
+  if (/^[\w-]{11}$/.test(s)) return s;
+  try {
+    const u = new URL(s);
+    if (u.hostname.endsWith('youtu.be')) return u.pathname.slice(1, 12);
+    if (u.searchParams.get('v')) return u.searchParams.get('v').slice(0, 11);
+    const m = u.pathname.match(/\/(shorts|embed|live)\/([\w-]{11})/);
+    if (m) return m[2];
+  } catch { /* not a URL */ }
+  return null;
+}
+async function fetchJSON(u) {
+  const r = await fetch(u, { cache: 'no-store' });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status);
+  return j;
+}
+async function loadVideo(id) {
+  stopRecordingIfAny();
+  resetState(id);
+  storeSet('lastVideo', id);
+  $('#urlInput').value = 'https://www.youtube.com/watch?v=' + id;
+  history.replaceState(null, '', '?v=' + id);
+  cueVideo(id);
+  $('#subList').replaceChildren(el('li', { class: 'subs-empty', text: '正在抓取字幕…' }));
+  $('#videoTitle').textContent = '';
+  renderAll();
+
+  const [tr, lesson] = await Promise.allSettled([
+    fetchJSON('/api/transcript?v=' + encodeURIComponent(id)),
+    fetchJSON('lessons/' + encodeURIComponent(id) + '.json'),
+  ]);
+  if (S.videoId !== id) return;
+  if (lesson.status === 'fulfilled') S.lesson = lesson.value;
+  if (tr.status === 'fulfilled') {
+    S.title = tr.value.title || '';
+    S.sentences = buildSentences(tr.value.lines || []);
+    computeSpeakers();
+    renderSubs();
+  } else {
+    $('#subList').replaceChildren(el('li', { class: 'subs-empty' },
+      '無法取得字幕：', tr.reason.message,
+      el('br'), el('span', { class: 'note', text: '請確認 server.py 有在執行，且影片有英文字幕。' })));
+  }
+  if (S.lesson) {
+    S.title = S.title || S.lesson.title || '';
+    S.shadow.items = (S.lesson.shadowing || []).map((x) => ({ ...x }));
+  }
+  $('#videoTitle').textContent = S.title;
+  addHistory(id, S.title, !!S.lesson);
+  renderAll();
+}
+
+/* ================= history (saved in this browser) ================= */
+const HISTORY_KEY = 'videoHistory';
+const HISTORY_MAX = 50;
+function getHistory() {
+  try { const h = JSON.parse(storeGet(HISTORY_KEY) || '[]'); return Array.isArray(h) ? h : []; } catch { return []; }
+}
+function setHistory(h) { storeSet(HISTORY_KEY, JSON.stringify(h.slice(0, HISTORY_MAX))); renderHistory(); }
+function addHistory(id, title, hasLesson) {
+  const old = getHistory().find((x) => x.id === id);
+  const h = getHistory().filter((x) => x.id !== id);
+  h.unshift({ id, title: title || old?.title || '', hasLesson, at: Date.now() });
+  setHistory(h);
+}
+function fmtDate(ms) {
+  const d = new Date(ms);
+  return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+function renderHistory() {
+  const h = getHistory();
+  $('#historyBtn').textContent = `歷史紀錄（${h.length}）`;
+  $('#historyClear').disabled = !h.length;
+  const list = $('#historyList');
+  if (!h.length) { list.replaceChildren(el('li', { class: 'history-empty', text: '還沒有紀錄。載入過的影片會自動記在這裡。' })); return; }
+  list.replaceChildren(...h.map((x) => {
+    const url = 'https://www.youtube.com/watch?v=' + x.id;
+    return el('li', { class: x.id === S.videoId ? 'current' : null },
+      el('button', { class: 'history-item', type: 'button', title: '載入這支影片', onclick: () => { $('#historyPanel').hidden = true; $('#historyBtn').setAttribute('aria-expanded', 'false'); loadVideo(x.id); } },
+        el('span', { class: 't', text: x.title || x.id }),
+        el('span', { class: 'u mono', text: url })),
+      el('span', { class: 'when' }, x.hasLesson ? el('span', { class: 'sc good', text: '有題庫' }) : null, ' ', fmtDate(x.at)),
+      el('button', { class: 'btn small ghost', type: 'button', text: '刪除', 'aria-label': '刪除 ' + (x.title || x.id), onclick: () => setHistory(getHistory().filter((y) => y.id !== x.id)) }));
+  }));
+}
+$('#historyBtn').addEventListener('click', () => {
+  const p = $('#historyPanel');
+  p.hidden = !p.hidden;
+  $('#historyBtn').setAttribute('aria-expanded', String(!p.hidden));
+  if (!p.hidden) renderHistory();
+});
+$('#historyClose').addEventListener('click', () => { $('#historyPanel').hidden = true; $('#historyBtn').setAttribute('aria-expanded', 'false'); });
+let clearArmed = false;
+$('#historyClear').addEventListener('click', (e) => {
+  if (!clearArmed) { clearArmed = true; e.target.textContent = '再按一次確認清除'; setTimeout(() => { clearArmed = false; e.target.textContent = '清除全部'; }, 3000); return; }
+  clearArmed = false; e.target.textContent = '清除全部';
+  setHistory([]);
+});
+renderHistory();
+
+// Add every video in the lessons folder to the history list once, so a copied
+// folder (or a lesson made in Claude Code) shows up without loading it by hand.
+// Videos the viewer deletes from the list are not added back.
+(async function seedHistoryFromLessons() {
+  let lessons;
+  try { lessons = await fetchJSON('/api/lessons'); } catch { return; }
+  let seeded;
+  try { seeded = new Set(JSON.parse(storeGet('seededLessons') || '[]')); } catch { seeded = new Set(); }
+  const h = getHistory();
+  let changed = false;
+  for (const l of lessons) {
+    const old = h.find((x) => x.id === l.id);
+    if (old) {
+      if (!old.hasLesson || !old.title) { old.hasLesson = true; old.title = old.title || l.title; changed = true; }
+    } else if (!seeded.has(l.id)) {
+      h.push({ id: l.id, title: l.title, hasLesson: true, at: Math.round(l.mtime * 1000) });
+      changed = true;
+    }
+    seeded.add(l.id);
+  }
+  storeSet('seededLessons', JSON.stringify([...seeded]));
+  if (changed) setHistory(h.sort((a, b) => b.at - a.at));
+})();
+$('#loadForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const id = parseVideoId($('#urlInput').value);
+  if (!id) { showBanner('看不懂這個網址，請貼上 YouTube 影片網址（youtube.com/watch?v=… 或 youtu.be/…）。'); return; }
+  showBanner('');
+  loadVideo(id);
+});
+function showBanner(t) { const b = $('#banner'); b.textContent = t; b.hidden = !t; }
+
+/* ================= stepper ================= */
+function stepDone(key) {
+  const L = S.lesson;
+  if (!L) return false;
+  if (key === 'mcq') return S.mcq.res.filter(Boolean).length === L.mcq.length;
+  if (key === 'cloze') return S.cloze.res.filter(Boolean).length === L.cloze.length;
+  if (key === 'translate') return S.tr.res.filter(Boolean).length === L.translate.length;
+  if (key === 'shadow') return S.shadow.items.length > 0 && S.shadow.items.every((x) => x.rec);
+  return false;
+}
+function renderStepper() {
+  $('#stepper').replaceChildren(...STEPS.map((s, i) => el('button', {
+    type: 'button',
+    class: 'step-chip' + (i === S.step ? ' current' : '') + (stepDone(s.key) ? ' done' : ''),
+    'aria-current': i === S.step ? 'step' : null,
+    onclick: () => goStep(i),
+  }, el('span', { class: 'n', text: stepDone(s.key) ? '✓' : i + 1 }), s.label)));
+  $('#stepCount').textContent = (S.step + 1) + ' / ' + STEPS.length;
+  $('#prevStep').disabled = S.step === 0;
+  $('#nextStep').disabled = S.step === STEPS.length - 1;
+}
+function goStep(i) {
+  stopRecordingIfAny();
+  S.step = Math.max(0, Math.min(STEPS.length - 1, i));
+  renderAll();
+}
+$('#prevStep').addEventListener('click', () => goStep(S.step - 1));
+$('#nextStep').addEventListener('click', () => { goStep(S.step + 1); $('.practice').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+
+function renderAll() {
+  renderStepper();
+  const key = STEPS[S.step].key;
+  const panel = $('#panel');
+  const view = ({ article: viewArticle, vocab: viewVocab, shadow: viewShadow, mcq: viewMcq, cloze: viewCloze, translate: viewTranslate, result: viewResult })[key]();
+  panel.replaceChildren(...[view].flat());
+}
+/* ---------- automatic lesson generation (server.py calls the Claude API) ---------- */
+const GEN = { running: false, t0: 0, error: '', needKey: false, vid: null };
+const genStatusText = () => `產生中…已等待 ${Math.round((Date.now() - GEN.t0) / 1000)} 秒`;
+function emptyLesson(what) {
+  const box = el('div', { class: 'empty' });
+  if (GEN.running && GEN.vid === S.videoId) {
+    box.append(
+      el('div', { class: 'gen-row' }, el('span', { class: 'spinner', 'aria-hidden': 'true' }), el('span', { id: 'genStatus', 'aria-live': 'polite', text: genStatusText() })),
+      el('div', { class: 'note', text: 'Claude 正在讀字幕、寫文章與出題，通常需要 1–3 分鐘。這段時間可以先看影片或做跟讀。' }));
+    return box;
+  }
+  box.append(el('div', { text: `這支影片還沒有${what}。請選一種方式產生，產生後會存起來，下次直接載入：` }));
+
+  // Option 1: automatic, via the Claude API key
+  const opt1 = el('div', { class: 'gen-opt' },
+    el('div', { class: 'label', text: '方法一　用 Claude API key 自動產生' }),
+    el('div', { class: 'note', text: '按下後約 1–3 分鐘完成，依用量計費（一支影片約 US$0.25）。' }));
+  if (GEN.error && GEN.vid === S.videoId) opt1.append(el('div', { class: 'feedback bad', text: GEN.error }));
+  if (GEN.needKey) opt1.append(keyForm());
+  else {
+    const busy = GEN.running;
+    opt1.append(el('div', { class: 'ctrl-row' },
+      el('button', { class: 'btn primary', type: 'button', text: '自動產生題目', disabled: busy, onclick: () => startGenerate() }),
+      busy ? el('span', { class: 'note', text: '另一支影片正在產生中，完成後才能再產生。' }) : null));
+  }
+
+  // Option 2: copy a command into Claude Code (no API key needed)
+  const url = 'https://www.youtube.com/watch?v=' + S.videoId;
+  const cmd = `幫我用 youtube-english-study 產生 ${url} 的練習，存成 lessons/${S.videoId}.json`;
+  const opt2 = el('div', { class: 'gen-opt' },
+    el('div', { class: 'label', text: '方法二　複製指令，由 Claude 手動產生' }),
+    el('div', { class: 'note', text: '不需要 API key。把下面這句貼到 Claude Code，產生完成後在這裡重新載入影片即可。' }),
+    el('code', { text: cmd }),
+    el('div', { class: 'ctrl-row' },
+      copyBtn(cmd, '複製指令'),
+      el('button', { class: 'btn small ghost', type: 'button', text: '重新載入影片', onclick: () => loadVideo(S.videoId) })));
+
+  box.append(opt1, opt2, el('div', { class: 'note', text: '跟讀不需要題庫：直接在右側字幕點「跟讀」就能練。' }));
+  return box;
+}
+function keyForm() {
+  const input = el('input', { class: 'text-in', id: 'apiKeyInput', type: 'password', placeholder: 'sk-ant-…', autocomplete: 'off' });
+  const msg = el('span', { class: 'note', 'aria-live': 'polite' });
+  return el('form', {
+    class: 'ctrl-group',
+    onsubmit: async (e) => {
+      e.preventDefault();
+      if (!input.value.trim()) { input.focus(); return; }
+      msg.textContent = '儲存中…';
+      try {
+        const r = await fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ apiKey: input.value.trim() }) });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status);
+      } catch (err) { msg.textContent = err.message; return; }
+      GEN.needKey = false; GEN.error = '';
+      startGenerate();
+    },
+  },
+    el('label', { class: 'label', for: 'apiKeyInput', text: 'Claude API key' }),
+    el('div', { class: 'note' }, '自動產生需要 Anthropic 的 API key（和 claude.ai 帳號不同，依用量計費，一支影片約 US$0.25）。到 ',
+      el('a', { href: 'https://platform.claude.com/', target: '_blank', rel: 'noopener', text: 'platform.claude.com' }),
+      ' 建立並儲值後貼在這裡。key 只存在這台電腦的 api_key.txt。'),
+    el('div', { class: 'ctrl-row' }, input, el('button', { class: 'btn primary', type: 'submit', text: '儲存並產生' }), msg));
+}
+async function startGenerate() {
+  const vid = S.videoId;
+  if (GEN.running || !vid) return;
+  try {
+    const s = await fetchJSON('/api/settings');
+    if (!s.hasKey) { Object.assign(GEN, { needKey: true, vid, error: '' }); renderAll(); return; }
+  } catch (e) {
+    Object.assign(GEN, { vid, error: '無法連到 server.py：' + e.message }); renderAll(); return;
+  }
+  Object.assign(GEN, { running: true, t0: Date.now(), error: '', vid });
+  renderAll();
+  const timer = setInterval(() => { const s = document.getElementById('genStatus'); if (s) s.textContent = genStatusText(); }, 1000);
+  try {
+    const r = await fetch('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ v: vid }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      if (j.code === 'no_key' || j.code === 'bad_key') GEN.needKey = true;
+      throw new Error(j.error || 'HTTP ' + r.status);
+    }
+    if (S.videoId === vid) {
+      S.lesson = j;
+      S.title = S.title || j.title || '';
+      S.shadow.items = [...(j.shadowing || []).map((x) => ({ ...x })), ...S.shadow.items.filter((x) => x.custom)];
+    }
+    addHistory(vid, (S.videoId === vid && S.title) || j.title || '', true);
+  } catch (e) {
+    GEN.error = '產生失敗：' + e.message;
+  } finally {
+    clearInterval(timer);
+    GEN.running = false;
+    if (S.videoId === vid || !S.lesson) renderAll();
+  }
+}
+function copyBtn(text, label) {
+  const b = el('button', { class: 'btn small', type: 'button', text: label });
+  b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(text); b.textContent = '已複製'; }
+    catch { b.textContent = '複製失敗，請手動選取'; }
+    setTimeout(() => { b.textContent = label; }, 1800);
+  });
+  return b;
+}
+
+/* ================= TTS (browser built-in) ================= */
+function say(text, rate = 0.9) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = rate;
+  const v = speechSynthesis.getVoices().find((x) => /en[-_]US/i.test(x.lang));
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
+/* ================= step: article ================= */
+function viewArticle() {
+  const L = S.lesson;
+  if (!L) return [el('h2', { text: '文章' }), emptyLesson('整理好的文章')];
+  return [
+    el('h2', { text: 'Article' }),
+    el('p', { class: 'lead', text: `程度 ${L.level || 'B1–B2'}・先讀過文章，掌握影片大意。` }),
+    el('div', { class: 'article' }, ...L.article.split(/\n\s*\n/).map((p) => el('p', { text: p }))),
+    el('div', { class: 'label', text: '中文重點摘要' }),
+    el('ul', { class: 'summary' }, ...(L.summary_zh || []).map((s) => el('li', { text: s }))),
+  ];
+}
+
+/* ================= step: vocab ================= */
+function sentenceContaining(t) {
+  const i = sentenceAt(t + 0.3);
+  return i >= 0 ? S.sentences[i] : { start: t, end: t + 5 };
+}
+function viewVocab() {
+  const L = S.lesson;
+  if (!L) return [el('h2', { text: '重點單字' }), emptyLesson('單字表')];
+  return [
+    el('h2', { text: 'Key Vocabulary' }),
+    el('p', { class: 'lead', text: '點「發音」聽標準讀音；點時間戳記播放影片原句。' }),
+    el('div', { class: 'table-wrap' }, el('table', {},
+      el('thead', {}, el('tr', {}, ...['Word / Phrase', '詞性', 'KK 音標', '中文意思', '影片原句', '補充例句'].map((h) => el('th', { text: h })))),
+      el('tbody', {}, ...L.vocab.map((v) => el('tr', {},
+        el('td', { class: 'word' }, v.word, ' ', el('button', { class: 'btn small ghost', type: 'button', text: '發音', onclick: () => say(v.word, 0.8) })),
+        el('td', { text: v.pos }),
+        el('td', { class: 'mono', text: v.kk }),
+        el('td', { text: v.zh }),
+        el('td', {},
+          el('button', { class: 'btn small ghost mono', type: 'button', text: '▶ ' + fmt(v.time), onclick: () => { const s = sentenceContaining(v.time); playSegment(s.start, s.end); } }),
+          ' ', el('span', { class: 'quote', text: v.quote })),
+        el('td', { text: v.example }),
+      ))))),
+  ];
+}
+
+/* ================= recording + speech recognition ================= */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const rec = { stream: null, mr: null, chunks: [], sr: null, srDone: null, final: '', interim: '', active: false, timer: null, t0: 0 };
+
+async function startRecording(onText) {
+  if (!navigator.mediaDevices?.getUserMedia) throw new Error('這個瀏覽器不支援錄音，請用 Chrome 或 Edge，並從 http://localhost 開啟。');
+  if (!rec.stream) rec.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+  rec.chunks = [];
+  rec.mr = new MediaRecorder(rec.stream);
+  rec.mr.ondataavailable = (e) => { if (e.data.size) rec.chunks.push(e.data); };
+  rec.mr.start();
+  rec.final = ''; rec.interim = ''; rec.sr = null; rec.srDone = null; rec.srError = null;
+  if (SR) {
+    const sr = new SR();
+    sr.lang = 'en-US'; sr.continuous = true; sr.interimResults = true; sr.maxAlternatives = 1;
+    sr.onresult = (e) => {
+      let fin = '', int = '';
+      for (let i = 0; i < e.results.length; i++) {
+        const r = e.results[i];
+        if (r.isFinal) fin += r[0].transcript + ' '; else int += r[0].transcript;
+      }
+      rec.final = fin; rec.interim = int;
+      onText((fin + int).trim());
+    };
+    sr.onerror = (e) => { rec.srError = e.error; };
+    rec.srDone = new Promise((res) => { sr.onend = res; });
+    try { sr.start(); rec.sr = sr; } catch { rec.sr = null; }
+  }
+  rec.active = true;
+}
+async function stopRecording() {
+  if (!rec.active) return null;
+  rec.active = false;
+  const stopped = new Promise((res) => { rec.mr.onstop = res; });
+  rec.mr.stop();
+  if (rec.sr) { try { rec.sr.stop(); } catch { /* ignore */ } await Promise.race([rec.srDone, sleep(3000)]); }
+  await stopped;
+  const blob = new Blob(rec.chunks, { type: rec.mr.mimeType || 'audio/webm' });
+  return { url: URL.createObjectURL(blob), heard: (rec.final + ' ' + rec.interim).replace(/\s+/g, ' ').trim(), srError: rec.srError, hasSR: !!rec.sr };
+}
+function stopRecordingIfAny() {
+  if (rec.active) { clearInterval(rec.timer); stopRecording(); }
+}
+
+/* ================= word alignment ================= */
+const NUM = { zero: '0', one: '1', two: '2', three: '3', four: '4', five: '5', six: '6', seven: '7', eight: '8', nine: '9', ten: '10', eleven: '11', twelve: '12', fifteen: '15', twenty: '20', thirty: '30', hundred: '100', ok: 'okay' };
+const norm = (w) => {
+  const n = String(w).toLowerCase().replace(/[’‘]/g, "'").replace(/[^a-z0-9']/g, '').replace(/^'+|'+$/g, '');
+  return NUM[n] || n;
+};
+const tokenize = (s) => String(s).split(/\s+/).map((raw) => ({ raw, n: norm(raw) })).filter((x) => x.n);
+function align(targetText, heardText) {
+  const a = tokenize(targetText), b = tokenize(heardText);
+  const n = a.length, m = b.length;
+  const D = Array.from({ length: n + 1 }, (_, i) => { const r = new Array(m + 1).fill(0); r[0] = i; return r; });
+  for (let j = 0; j <= m; j++) D[0][j] = j;
+  for (let i = 1; i <= n; i++) for (let j = 1; j <= m; j++) {
+    D[i][j] = Math.min(D[i - 1][j] + 1, D[i][j - 1] + 1, D[i - 1][j - 1] + (a[i - 1].n === b[j - 1].n ? 0 : 1));
+  }
+  const ops = [];
+  let i = n, j = m;
+  while (i > 0 || j > 0) {
+    if (i > 0 && j > 0 && D[i][j] === D[i - 1][j - 1] + (a[i - 1].n === b[j - 1].n ? 0 : 1)) {
+      ops.unshift(a[i - 1].n === b[j - 1].n ? { type: 'ok', t: a[i - 1].raw } : { type: 'bad', t: a[i - 1].raw, h: b[j - 1].raw });
+      i--; j--;
+    } else if (i > 0 && D[i][j] === D[i - 1][j] + 1) { ops.unshift({ type: 'miss', t: a[i - 1].raw }); i--; }
+    else { ops.unshift({ type: 'extra', h: b[j - 1].raw }); j--; }
+  }
+  const ok = ops.filter((o) => o.type === 'ok').length;
+  return { ops, score: n ? Math.round((ok / n) * 100) : 0 };
+}
+const scoreClass = (s) => (s >= 90 ? 'good' : s >= 70 ? 'mid' : 'low');
+const scoreWord = (s) => (s >= 90 ? '很棒，幾乎都聽得懂' : s >= 70 ? '不錯，再修正紅字的部分' : '再聽一次原句，放慢速度跟讀');
+
+function renderDiff(result, vocab) {
+  const bareWord = (w) => w.replace(/^[^\w']+|[^\w']+$/g, '');
+  const diff = el('div', { class: 'diff' }, ...result.ops.filter((o) => o.type !== 'extra').map((o) => {
+    if (o.type === 'ok') return el('span', { class: 'w ok', text: o.t });
+    if (o.type === 'bad') return el('span', { class: 'w bad', title: '辨識成：' + o.h }, o.t, el('span', { class: 'heard', text: '→ ' + o.h }));
+    return el('span', { class: 'w miss', title: '沒有辨識到', text: o.t });
+  }));
+  const extras = result.ops.filter((o) => o.type === 'extra').map((o) => o.h);
+  const problems = [];
+  const seen = new Set();
+  for (const o of result.ops) {
+    if (o.type !== 'bad' && o.type !== 'miss') continue;
+    const w = bareWord(o.t); const key = w.toLowerCase();
+    if (!w || seen.has(key)) continue;
+    seen.add(key);
+    const v = (vocab || []).find((x) => x.word.toLowerCase().split(' ').includes(key));
+    problems.push(el('li', {},
+      el('b', { text: w }),
+      el('span', { text: o.type === 'bad' ? `系統聽成「${o.h}」` : '系統沒聽到這個字（可能太小聲、太快或被吞音）' }),
+      v ? el('span', { class: 'mono', text: v.word + ' ' + v.kk }) : null,
+      el('button', { class: 'btn small', type: 'button', text: '標準發音', onclick: () => say(w, 0.8) }),
+      el('button', { class: 'btn small ghost', type: 'button', text: '慢速', onclick: () => say(w, 0.5) })));
+  }
+  return [
+    diff,
+    el('div', { class: 'legend' },
+      el('span', {}, el('span', { class: 'w ok', text: 'word' }), ' 正確'),
+      el('span', {}, el('span', { class: 'w bad', text: 'word' }), ' 發音被聽成別的字'),
+      el('span', {}, el('span', { class: 'w miss', text: 'word' }), ' 漏念／沒聽到')),
+    extras.length ? el('div', { class: 'note', text: '多念的字：' + extras.join(' ') }) : null,
+    problems.length ? el('div', { class: 'label', text: '需要加強的字' }) : null,
+    problems.length ? el('ul', { class: 'issues' }, ...problems) : null,
+  ];
+}
+
+/* ================= step: shadowing ================= */
+function addShadow(s) {
+  let idx = S.shadow.items.findIndex((x) => Math.abs(x.start - s.start) < 0.3);
+  if (idx < 0) { S.shadow.items.push({ text: s.text, start: s.start, end: s.end, custom: true }); idx = S.shadow.items.length - 1; }
+  S.shadow.i = idx;
+  goStep(STEPS.findIndex((x) => x.key === 'shadow'));
+  $('.practice').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function viewShadow() {
+  const items = S.shadow.items;
+  const head = [el('h2', { text: 'Shadowing 跟讀' }),
+    el('p', { class: 'lead', text: '先聽原句 → 按「開始錄音」跟著念 → 按「停止」看哪些字沒念好，可回放自己的錄音對照。右側字幕任一句都能點「跟讀」加進來。' })];
+  if (!items.length) return [...head, el('div', { class: 'empty', text: '還沒有跟讀句。在右側字幕點任一句的「跟讀」開始練習。' })];
+  if (!SR) head.push(el('div', { class: 'banner', text: '此瀏覽器不支援語音辨識，只能錄音回放、無法標出錯字。請改用 Chrome 或 Edge。' }));
+
+  const i = Math.min(S.shadow.i, items.length - 1);
+  const it = items[i];
+  const picks = el('div', { class: 'shadow-picks' }, ...items.map((x, k) => el('button', {
+    type: 'button', class: 'pick' + (k === i ? ' current' : ''), title: x.text,
+    onclick: () => { stopRecordingIfAny(); S.shadow.i = k; renderAll(); },
+  }, (x.custom ? '自選 ' : '第 ') + (k + 1) + (x.custom ? '' : ' 句'),
+    x.rec ? el('span', { class: 'sc ' + scoreClass(x.rec.score), text: x.rec.hasSR ? x.rec.score : '錄' }) : null)));
+
+  const live = el('div', { class: 'live', 'aria-live': 'polite' });
+  const status = el('div', { class: 'rec-status', text: '準備好就按「開始錄音」' });
+  const resultBox = el('div');
+  const recBtn = el('button', { class: 'btn rec', type: 'button', text: '● 開始錄音' });
+
+  const showResult = () => {
+    if (!it.rec) { resultBox.replaceChildren(); return; }
+    const r = it.rec;
+    const audio = el('audio', { controls: true, src: r.url, preload: 'auto' });
+    const kids = [
+      el('div', { class: 'ctrl-row' },
+        el('button', { class: 'btn', type: 'button', text: '▶ 回放我的錄音', onclick: () => { stopSegment(); playerReady && player.pauseVideo(); audio.currentTime = 0; audio.play(); } }),
+        el('button', { class: 'btn', type: 'button', text: '原句 → 我的錄音', onclick: async () => { audio.pause(); await playSegment(it.start, it.end); await sleep(300); audio.currentTime = 0; audio.play(); } })),
+      audio,
+    ];
+    if (r.hasSR && r.heard) {
+      const res = align(it.text, r.heard);
+      kids.unshift(
+        el('div', { class: 'score-line' },
+          el('span', { class: 'score-num', text: res.score }),
+          el('span', { class: 'sc ' + scoreClass(res.score), text: scoreWord(res.score) })),
+        el('div', { class: 'note', text: '系統聽到：' + r.heard }),
+        ...renderDiff(res, S.lesson?.vocab));
+    } else if (r.hasSR) {
+      kids.unshift(el('div', { class: 'feedback bad', text: r.srError === 'not-allowed' ? '語音辨識權限被拒絕，只保留錄音。' : r.srError === 'network' ? '語音辨識需要網路連線（Chrome 會送到 Google 辨識），目前連不上，只保留錄音。' : '沒有辨識到語音，請靠近麥克風、念大聲一點再試一次。' }));
+    }
+    kids.push(el('div', { class: 'note', text: '錯字判定來自瀏覽器的語音辨識：辨識器會自動猜最接近的字，所以結果是「別人聽起來像什麼」的參考，不是逐音素評分。' }));
+    resultBox.replaceChildren(el('div', { class: 'result' }, ...kids));
+  };
+
+  recBtn.addEventListener('click', async () => {
+    if (!rec.active) {
+      stopSegment(); if (playerReady) player.pauseVideo();
+      try {
+        await startRecording((t) => { live.textContent = t; });
+      } catch (e) {
+        status.textContent = e.name === 'NotAllowedError' ? '麥克風權限被拒絕：請點網址列左側的鎖頭圖示，允許麥克風後重試。' : (e.message || String(e));
+        return;
+      }
+      recBtn.textContent = '■ 停止'; recBtn.classList.add('on');
+      live.textContent = '';
+      rec.t0 = Date.now();
+      const tick = () => { status.replaceChildren(el('span', { class: 'rec-dot' }), '錄音中 ' + ((Date.now() - rec.t0) / 1000).toFixed(1) + ' 秒'); };
+      tick();
+      rec.timer = setInterval(() => { tick(); if (Date.now() - rec.t0 > 30000) recBtn.click(); }, 100);
+    } else {
+      clearInterval(rec.timer);
+      recBtn.disabled = true; status.textContent = '分析中…';
+      const r = await stopRecording();
+      recBtn.disabled = false; recBtn.textContent = '● 重新錄音'; recBtn.classList.remove('on');
+      if (!r) return;
+      if (it.rec?.url) URL.revokeObjectURL(it.rec.url);
+      const score = r.hasSR && r.heard ? align(it.text, r.heard).score : 0;
+      it.rec = { ...r, score };
+      renderAll();
+    }
+  });
+
+  const dictIn = el('input', { class: 'text-in', id: 'dictInput', placeholder: '聽完原句，打出你聽到的英文', autocomplete: 'off' });
+  const dictOut = el('div');
+  const dict = el('details', { class: 'dict' },
+    el('summary', { text: '聽寫對照（選用）' }),
+    el('div', { class: 'ctrl-group', style: 'margin-top:10px' },
+      el('div', { class: 'note', text: '先遮住上面的句子（或不要看），播放原句後打出聽到的內容。' }),
+      el('form', { class: 'ctrl-row', onsubmit: (e) => {
+        e.preventDefault();
+        const res = align(it.text, dictIn.value);
+        dictOut.replaceChildren(el('div', { class: 'result' }, el('div', { class: 'score-line' }, el('span', { class: 'score-num', text: res.score }), el('span', { class: 'sc ' + scoreClass(res.score), text: '聽寫正確率' })), ...renderDiff(res, S.lesson?.vocab).slice(0, 2)));
+      } }, dictIn, el('button', { class: 'btn', type: 'submit', text: '對照' })),
+      dictOut));
+
+  const card = [
+    picks,
+    el('div', { class: 'target', text: it.text }),
+    el('div', { class: 'target-meta mono', text: fmt(it.start) + ' – ' + fmt(it.end) + '・第 ' + (i + 1) + ' / ' + items.length + ' 句' }),
+    el('div', { class: 'ctrl-group' },
+      el('div', { class: 'label', text: '1　聽' }),
+      el('div', { class: 'ctrl-row' },
+        el('button', { class: 'btn primary', type: 'button', text: '▶ 播放原句', onclick: () => playSegment(it.start, it.end) }),
+        el('button', { class: 'btn', type: 'button', text: '0.75× 慢速', onclick: () => playSegment(it.start, it.end, 0.75) }),
+        el('button', { class: 'btn ghost', type: 'button', text: '電腦朗讀', title: '用瀏覽器內建語音念這句', onclick: () => say(it.text, 0.85) }))),
+    el('div', { class: 'ctrl-group' },
+      el('div', { class: 'label', text: '2　跟讀錄音' }),
+      el('div', { class: 'ctrl-row' }, recBtn, status),
+      live),
+    resultBox,
+    dict,
+    el('div', { class: 'ctrl-row' },
+      el('button', { class: 'btn', type: 'button', text: '← 上一句', disabled: i === 0, onclick: () => { stopRecordingIfAny(); S.shadow.i = i - 1; renderAll(); } }),
+      el('button', { class: 'btn', type: 'button', text: '下一句 →', disabled: i === items.length - 1, onclick: () => { stopRecordingIfAny(); S.shadow.i = i + 1; renderAll(); } })),
+  ];
+  if (it.rec) { recBtn.textContent = '● 重新錄音'; showResult(); }
+  return [...head, ...card];
+}
+
+/* ================= step: multiple choice ================= */
+function quizHeader(title, i, total) {
+  return el('div', { class: 'q-head' }, el('h2', { text: title }), el('span', { class: 'mono note', text: `第 ${Math.min(i + 1, total)} / ${total} 題` }));
+}
+function quizDone(title, res, total, resetFn) {
+  const ok = res.filter((r) => r && r.ok).length;
+  return [el('h2', { text: title + '完成' }),
+    el('div', { class: 'score-line' }, el('span', { class: 'score-num', text: `${ok} / ${total}` }), el('span', { class: 'sc ' + scoreClass((ok / total) * 100), text: '答對題數' })),
+    el('div', { class: 'ctrl-row' },
+      el('button', { class: 'btn', type: 'button', text: '重做這一節', onclick: () => { resetFn(); renderAll(); } }),
+      el('button', { class: 'btn primary', type: 'button', text: '下一步 →', onclick: () => goStep(S.step + 1) }))];
+}
+function viewMcq() {
+  const L = S.lesson;
+  if (!L) return [el('h2', { text: '選擇題' }), emptyLesson('選擇題')];
+  const st = S.mcq, total = L.mcq.length;
+  if (st.i >= total) return quizDone('選擇題', st.res, total, () => { S.mcq = { i: 0, res: [] }; });
+  const q = L.mcq[st.i], r = st.res[st.i];
+  const opts = el('div', { class: 'options' }, ...q.options.map((o, k) => el('button', {
+    type: 'button', disabled: !!r,
+    class: 'opt' + (r && k === q.answer ? ' right' : '') + (r && k === r.picked && !r.ok ? ' wrong' : ''),
+    onclick: () => { st.res[st.i] = { ok: k === q.answer, picked: k }; renderAll(); },
+  }, el('span', { class: 'k', text: 'ABCD'[k] }), el('span', { text: o }))));
+  return [
+    quizHeader('選擇題（字義）', st.i, total),
+    el('div', { class: 'q-text', text: q.q }),
+    opts,
+    r ? el('div', { class: 'feedback ' + (r.ok ? 'ok' : 'bad') }, el('b', { text: r.ok ? '答對了' : '答錯了，正確答案是 ' + 'ABCD'[q.answer] }), q.explain) : null,
+    r ? el('div', {}, el('button', { class: 'btn primary', type: 'button', text: st.i + 1 < total ? '下一題 →' : '看結果', onclick: () => { st.i++; renderAll(); } })) : null,
+  ];
+}
+
+/* ================= step: cloze ================= */
+function viewCloze() {
+  const L = S.lesson;
+  if (!L) return [el('h2', { text: '克漏字' }), emptyLesson('克漏字題')];
+  const st = S.cloze, total = L.cloze.length;
+  if (st.i >= total) return quizDone('克漏字', st.res, total, () => { S.cloze = { i: 0, res: [] }; });
+  const q = L.cloze[st.i], r = st.res[st.i];
+  const parts = q.sentence.split(/_{3,}/);
+  const sent = el('div', { class: 'cloze-sent' }, parts[0], el('span', { class: 'blank', text: r ? q.answer : '?' }), parts.slice(1).join(''));
+  const input = el('input', { class: 'text-in', id: 'clozeInput', placeholder: '輸入答案後按 Enter', autocomplete: 'off', disabled: !!r, value: r ? r.given : null });
+  const form = el('form', { class: 'ctrl-row', onsubmit: (e) => {
+    e.preventDefault();
+    if (r || !input.value.trim()) return;
+    st.res[st.i] = { ok: norm(input.value.trim()) === norm(q.answer), given: input.value.trim() };
+    renderAll();
+  } }, input, el('button', { class: 'btn primary', type: 'submit', text: '送出', disabled: !!r }));
+  const out = [
+    quizHeader('克漏字', st.i, total),
+    sent,
+    el('div', { class: 'note', text: '提示：' + q.hint }),
+    form,
+  ];
+  if (r) {
+    out.push(el('div', { class: 'feedback ' + (r.ok ? 'ok' : 'bad') }, el('b', { text: r.ok ? '答對了' : `答錯了：你寫「${r.given}」，正確是「${q.answer}」` }), q.explain));
+    out.push(el('div', {}, el('button', { class: 'btn primary', type: 'button', text: st.i + 1 < total ? '下一題 →' : '看結果', onclick: () => { st.i++; renderAll(); } })));
+  } else setTimeout(() => input.focus({ preventScroll: true }), 0);
+  return out;
+}
+
+/* ================= step: translation ================= */
+function viewTranslate() {
+  const L = S.lesson;
+  if (!L) return [el('h2', { text: '中翻英' }), emptyLesson('中翻英題')];
+  const st = S.tr, total = L.translate.length;
+  if (st.i >= total) return quizDone('中翻英', st.res, total, () => { S.tr = { i: 0, res: [] }; });
+  const q = L.translate[st.i], r = st.res[st.i];
+  const ta = el('textarea', { class: 'text-in', id: 'trInput', placeholder: '用英文寫出這句話', disabled: !!(r && r.checked) });
+  if (r) ta.value = r.answer;
+  const out = [quizHeader('中翻英', st.i, total), el('div', { class: 'q-text', text: q.zh }),
+    el('div', { class: 'note' }, '試著用上：', ...q.keywords.map((k) => el('span', { class: 'kw', style: 'background:var(--surface-2)', text: k }))), ta];
+  if (!r || !r.checked) {
+    out.push(el('div', {}, el('button', { class: 'btn primary', type: 'button', text: '送出，看參考答案', onclick: () => {
+      if (!ta.value.trim()) { ta.focus(); return; }
+      st.res[st.i] = { answer: ta.value.trim(), checked: true };
+      renderAll();
+    } })));
+    return out;
+  }
+  const lower = r.answer.toLowerCase().replace(/[’‘]/g, "'");
+  const hits = q.keywords.map((k) => ({ k, hit: lower.includes(k.toLowerCase()) }));
+  out.push(
+    el('div', { class: 'feedback info' },
+      el('b', { text: '參考答案' }), q.reference,
+      el('div', { style: 'margin-top:8px' }, ...hits.map((h) => el('span', { class: 'kw ' + (h.hit ? 'hit' : 'miss'), text: (h.hit ? '✓ ' : '✗ ') + h.k })))),
+    el('div', { class: 'note', text: '這一題沒有標準答案，請對照參考答案自評。想要逐句批改文法，可以把答案複製到 Claude Code。' }),
+    el('div', { class: 'ctrl-row' },
+      el('button', { class: 'btn' + (r.ok === true ? ' primary' : ''), type: 'button', text: '我寫對了', onclick: () => { r.ok = true; renderAll(); } }),
+      el('button', { class: 'btn' + (r.ok === false ? ' primary' : ''), type: 'button', text: '需要加強', onclick: () => { r.ok = false; renderAll(); } }),
+      copyBtn(`請幫我批改中翻英（指出文法或用字問題，並給較自然的說法）：\n題目：${q.zh}\n我的答案：${r.answer}`, '複製給 Claude 批改')),
+  );
+  if (r.ok !== undefined) out.push(el('div', {}, el('button', { class: 'btn primary', type: 'button', text: st.i + 1 < total ? '下一題 →' : '看結果', onclick: () => { st.i++; renderAll(); } })));
+  return out;
+}
+
+/* ================= step: results ================= */
+function viewResult() {
+  const L = S.lesson;
+  const items = S.shadow.items.filter((x) => x.rec && x.rec.hasSR && x.rec.heard);
+  const avg = items.length ? Math.round(items.reduce((a, x) => a + x.rec.score, 0) / items.length) : null;
+  const stat = (v, l) => el('div', { class: 'stat' }, el('div', { class: 'v', text: v }), el('div', { class: 'l', text: l }));
+  const frac = (res, total) => `${res.filter((r) => r && r.ok).length} / ${total}`;
+  const out = [el('h2', { text: '練習成績' })];
+  out.push(el('div', { class: 'stats' },
+    stat(avg == null ? '—' : avg, `跟讀平均分數（${items.length} 句）`),
+    L ? stat(frac(S.mcq.res, L.mcq.length), '選擇題') : null,
+    L ? stat(frac(S.cloze.res, L.cloze.length), '克漏字') : null,
+    L ? stat(frac(S.tr.res, L.translate.length), '中翻英（自評）') : null));
+  if (L) {
+    const all = [...S.mcq.res, ...S.cloze.res, ...S.tr.res].filter(Boolean);
+    const okN = all.filter((r) => r.ok).length;
+    const totalN = L.mcq.length + L.cloze.length + L.translate.length;
+    out.push(el('div', { class: 'note', text: `總答對率：${okN} / ${totalN}（${Math.round((okN / totalN) * 100)}%）` }));
+    const review = new Set();
+    S.mcq.res.forEach((r, k) => { if (r && !r.ok) review.add(L.mcq[k].word || L.mcq[k].q); });
+    S.cloze.res.forEach((r, k) => { if (r && !r.ok) review.add(L.cloze[k].answer); });
+    S.tr.res.forEach((r, k) => { if (r && r.ok === false) L.translate[k].keywords.forEach((w) => review.add(w)); });
+    out.push(el('div', { class: 'label', text: '建議複習的單字' }),
+      review.size ? el('div', { class: 'review' }, ...[...review].map((w) => el('button', { class: 'pick', type: 'button', title: '聽發音', onclick: () => say(w, 0.8), text: w }))) : el('div', { class: 'note', text: '目前沒有答錯的單字。' }));
+  }
+  const weak = S.shadow.items.filter((x) => x.rec && x.rec.hasSR && x.rec.score < 70);
+  if (weak.length) {
+    out.push(el('div', { class: 'label', text: '建議再跟讀的句子（低於 70 分）' }),
+      el('ul', { class: 'issues' }, ...weak.map((x) => el('li', {},
+        el('span', { class: 'sc low', text: x.rec.score }), el('span', { text: x.text }),
+        el('button', { class: 'btn small', type: 'button', text: '再練一次', onclick: () => { S.shadow.i = S.shadow.items.indexOf(x); goStep(2); } })))));
+  }
+  out.push(el('div', {}, el('button', { class: 'btn', type: 'button', text: '全部重做', onclick: () => {
+    S.mcq = { i: 0, res: [] }; S.cloze = { i: 0, res: [] }; S.tr = { i: 0, res: [] };
+    S.shadow.items.forEach((x) => { if (x.rec?.url) URL.revokeObjectURL(x.rec.url); delete x.rec; });
+    goStep(0);
+  } })));
+  return out;
+}
+
+/* ================= boot ================= */
+if (location.protocol === 'file:') {
+  showBanner('請不要直接雙擊開啟 index.html。請在這個資料夾執行 python server.py，再用 Chrome 開啟 http://localhost:8000');
+}
+resetState(null);
+const startId = parseVideoId(new URLSearchParams(location.search).get('v') || '') || storeGet('lastVideo') || parseVideoId(DEFAULT_URL);
+loadVideo(startId);
+</script>
+<script src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>
