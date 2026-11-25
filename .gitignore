@@ -7,3 +7,7 @@ __pycache__/
 build/
 dist/
 *.spec
+lan_pin.txt
+**/lan_pin.txt
+lan/
+**/lan/
